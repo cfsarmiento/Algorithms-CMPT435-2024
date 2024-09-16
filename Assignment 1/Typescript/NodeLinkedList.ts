@@ -1,8 +1,8 @@
 class NodeLinkedList {
 
     // Instance variables
-    myData: string | null;
-    myNext: NodeLinkedList | null;
+    myData: string | null | undefined;
+    myNext: NodeLinkedList | null | undefined;
 
     /* Constructor */
     /**
@@ -50,10 +50,10 @@ class NodeLinkedList {
     /**
      * Class method to update next node
      */
-    set setNext(newNext: NodeLinkedList | null) {
+    set setNext(newNext: NodeLinkedList | null | undefined) {
 
         this.myNext = newNext;
 
     } // setNext()
 
-} // Class Node
+} // Class Node 
