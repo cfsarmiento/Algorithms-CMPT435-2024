@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 class NodeLinkedList {
 
     // Instance variables
