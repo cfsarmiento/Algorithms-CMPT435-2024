@@ -1,3 +1,13 @@
+/**
+ * Stack Class
+ * Author: Christian Sarmiento
+ * Purpose: Class definition for a stack list data structure, used to store string values of palindromes.
+ * Date Created: 9/7/24
+ * Last Updated: 9/15/24
+ * -----------------------------------------------------------------------------------------------------------------------
+ * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+*/
+
 class Stack {
 
     // Instance Variables
