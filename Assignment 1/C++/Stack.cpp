@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a stack list data structure, used to store string values of palindromes.
  * Date Created: 9/18/24
- * Last Updated: 9/18/24
+ * Last Updated: 9/21/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -18,7 +18,7 @@ class Stack {
 
     // Instance variables
     public:
-        NodeLinkedList * myTop; 
+        NodeLinkedList* myTop; 
     
     /**
      * Null Constructor for linked list node class
@@ -58,8 +58,23 @@ class Stack {
     */
     std::string pop() {
 
+        // Variables
+        std::string poppedItem;
+        NodeLinkedList* temp;
+
+        // Pop from the stack
+        if(!isEmpty()) {
+
+            poppedItem = myTop->getData();
+            temp = myTop;
+            myTop = myTop->getNext();
+            delete temp;  // getting rid of the popped node in memomry
+
+        } // if
         
-    } // pop()
+        return poppedItem;
+
+    }; // pop()
 
     /**
      * Class method that adds a node with a new value to the 
@@ -68,8 +83,18 @@ class Stack {
     */
     void push(const std::string& data) {
 
+        // Variables
+        NodeLinkedList* newNode;
 
-    } // push()
+        // Instantiate new node object & save new data
+        newNode = new NodeLinkedList();
+        newNode->setData(data);
+
+        // Update stack
+        newNode->setNext(myTop);
+        myTop = newNode;
+
+    }; // push()
     
 
 }; // Class Stack
