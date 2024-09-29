@@ -16,9 +16,9 @@
 
 class NodeLinkedList {
 
+     // Instance Variables
     public:
 
-        // Instance variables
         std::string myData;
         NodeLinkedList* myNext;  
 
@@ -27,7 +27,7 @@ class NodeLinkedList {
         NodeLinkedList();
         NodeLinkedList(const std::string& data, NodeLinkedList* node);
 
-        // Class Methods
+        // Class Methods Headers
         std::string getData();
         NodeLinkedList* getNext();
         void setData(const std::string& data);

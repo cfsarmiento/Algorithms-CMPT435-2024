@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a queue list data structure, used to store string values of palindromes.
  * Date Created: 9/18/24
- * Last Updated: 9/21/24
+ * Last Updated: 9/28/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -15,7 +15,8 @@
 
 class Queue {
 
-    private:
+    // Instnace Variables
+    public:
         NodeLinkedList* myHead;
         NodeLinkedList* myTail;
     
@@ -74,5 +75,28 @@ class Queue {
         myTail = newNode;
 
     } // enqueue
+
+    /**
+     * Method that takes an element off the front of the queue
+    */
+    std::string dequeue() {
+
+        // Variables
+        std::string dequeuedItem;
+        NodeLinkedList* temp;
+
+        // Dequeue from the start of the queue
+        if (!isEmpty()) {
+
+            dequeuedItem = myHead->getData();
+            temp = myHead;
+            myHead = myHead->getNext();
+            delete temp;  // gets rid of dequeued node in memory
+
+        } // if
+
+        return dequeuedItem;
+ 
+    } // dequeue
 
 };
