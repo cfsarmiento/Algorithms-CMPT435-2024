@@ -4,6 +4,8 @@
  * Purpose: 
  * Date Created: 9/28/24
  * Last Updated: 9/28/24
+ * Compilation: g++ -std=c++11 -o PalindromeFinder main.cpp NodeLinkedList.cpp Queue.cpp Stack.cpp
+ * Run Program: ./PalindromeFinder
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -13,6 +15,8 @@
 #include "Stack.h"
 #include "Queue.h"
 #include <fstream>
+#include <algorithm>
+#include <cctype>
 
 // Types
 #include <string>
@@ -45,8 +49,26 @@ int main() {
 
     // Close magicitems.txt
     file.close();
-
     
+    /* Find Palindromes */
+    // Iterate through each line in the array 
+    for (int i = 0; i < magicItems.size(); i++) {
+
+        // Save item entry to a variable to avoid updating the real data
+        std::string magicItem = magicItems[i];
+        
+        // Clean data by removing spaces and normalizing capatilization
+        magicItem.erase(std::remove(magicItem.begin(), magicItem.end(), ' '), magicItem.end());  // remove spaces 
+        std::transform(magicItem.begin(), magicItem.end(), magicItem.begin(), [](unsigned char c) { 
+
+            return std::tolower(c);
+
+        }); // lamda function for lowercase conversion``
+
+        // Load each character from the string into a stack and queue
+
+
+    } // for i
 
 
 

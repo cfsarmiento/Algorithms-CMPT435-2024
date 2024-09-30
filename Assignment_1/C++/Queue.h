@@ -1,34 +1,39 @@
 /**
- * Stack Header File
+ * Queue Header File
  * Author: Christian Sarmiento
- * Purpose: Header file for Stack class. Allows it to be used in other files. 
+ * Purpose: Header file for Queue class. Allows it to be used in other files. 
  * Date Created: 9/28/24
  * Last Updated: 9/28/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 // Dependencies
 #include "NodeLinkedList.h"
 
-class Stack {
+// Types
+#include <string>
+
+class Queue {
 
      // Instance Variables
     public:
-        NodeLinkedList* myTop; 
+        NodeLinkedList* myHead;
+        NodeLinkedList* myTail; 
 
     // Null & Full Constructors
-    Stack();
-    Stack(NodeLinkedList* node);
+    Queue();
+    Queue(NodeLinkedList* node);
 
     // Class Method Headers
     bool isEmpty();
-    std::string pop();
-    void push(const std::string& data);
+    void enqueue(const std::string& data);
+    std::string dequeue();
+    
 
-}; // Class Stack
+}; // Class Stack 
 
-#endif // STACK_H
+#endif // QUEUE_H
