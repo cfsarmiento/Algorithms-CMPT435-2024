@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Header file for Queue class. Allows it to be used in other files. 
  * Date Created: 9/28/24
- * Last Updated: 9/28/24
+ * Last Updated: 9/30/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -13,9 +13,6 @@
 
 // Dependencies
 #include "NodeLinkedList.h"
-
-// Types
-#include <string>
 
 class Queue {
 
@@ -30,8 +27,8 @@ class Queue {
 
     // Class Method Headers
     bool isEmpty();
-    void enqueue(const std::string& data);
-    std::string dequeue();
+    void enqueue(char data);
+    char dequeue();
     
 
 }; // Class Stack 

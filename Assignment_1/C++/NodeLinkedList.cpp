@@ -3,16 +3,13 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
  * Date Created: 9/17/24
- * Last Updated: 9/18/24
+ * Last Updated: 9/30/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
-#include "NodeLinkedList.h"
-
-// Types
-#include <string>  
+#include "NodeLinkedList.h" 
 
 /* Method Implementations */
 /**
@@ -20,7 +17,7 @@
  */
 NodeLinkedList::NodeLinkedList() {
 
-    myData = "null";
+    myData = ' ';
     myNext = nullptr;
 
 } // Null Constructor
@@ -33,7 +30,7 @@ NodeLinkedList::NodeLinkedList() {
  * @param data data for the node
  * @param next next node linked to current node (if any)
  */
-NodeLinkedList::NodeLinkedList(const std::string& data, NodeLinkedList* node) {  // "const std::string& ... " passes variables by reference
+NodeLinkedList::NodeLinkedList(char data, NodeLinkedList* node) {  // "const std::string& ... " passes variables by reference
 
     myData = data;
     myNext = node;
@@ -44,7 +41,7 @@ NodeLinkedList::NodeLinkedList(const std::string& data, NodeLinkedList* node) { 
 /**
  * Class method to return the data from the current node
 */
-std::string NodeLinkedList::getData() {
+char NodeLinkedList::getData() {
 
     return myData;
 
@@ -63,7 +60,7 @@ NodeLinkedList* NodeLinkedList::getNext() {
 /**
  * Class method that updates the data in the current node
 */
-void NodeLinkedList::setData(const std::string& data) {
+void NodeLinkedList::setData(char data) {
 
     myData = data;
 

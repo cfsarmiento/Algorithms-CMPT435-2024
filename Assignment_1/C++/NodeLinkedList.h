@@ -3,34 +3,31 @@
  * Author: Christian Sarmiento
  * Purpose: Header file for NodeLinkedList class. Allows it to be used in other files. 
  * Date Created: 9/18/24
- * Last Updated: 9/18/24
+ * Last Updated: 9/30/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 #ifndef NODELINKEDLIST_H
-#define NODELINKEDLIST_H
-
-// Types
-#include <string>  
+#define NODELINKEDLIST_H 
 
 class NodeLinkedList {
 
      // Instance Variables
     public:
 
-        std::string myData;
+        char myData;
         NodeLinkedList* myNext;  
 
 
         // Null & Full Constructors
         NodeLinkedList();
-        NodeLinkedList(const std::string& data, NodeLinkedList* node);
+        NodeLinkedList(char data, NodeLinkedList* node);
 
         // Class Methods Headers
-        std::string getData();
+        char getData();
         NodeLinkedList* getNext();
-        void setData(const std::string& data);
+        void setData(char data);
         void setNext(NodeLinkedList* node);
 
 }; // Class NodeLinkedList

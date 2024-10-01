@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Header file for Stack class. Allows it to be used in other files. 
  * Date Created: 9/28/24
- * Last Updated: 9/28/24
+ * Last Updated: 9/30/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -13,9 +13,6 @@
 
 // Dependencies
 #include "NodeLinkedList.h"
-
-// Types
-#include <string>
 
 class Stack {
 
@@ -29,8 +26,8 @@ class Stack {
 
     // Class Method Headers
     bool isEmpty();
-    std::string pop();
-    void push(const std::string& data);
+    char pop();
+    void push(const char data);
 
 }; // Class Stack
 

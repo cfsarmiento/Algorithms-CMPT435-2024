@@ -3,16 +3,13 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a stack list data structure, used to store string values of palindromes.
  * Date Created: 9/18/24
- * Last Updated: 9/21/24
+ * Last Updated: 9/30/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
 #include "Stack.h"
-
-// Types
-#include <string>  
 
 /* Method Implementations */
 /**
@@ -51,10 +48,10 @@ bool Stack::isEmpty() {
  * Class method that returns the string value that exists 
  * in the node at the top of the list
 */
-std::string Stack::pop() {
+char Stack::pop() {
 
     // Variables
-    std::string poppedItem;
+    char poppedItem;
     NodeLinkedList* temp;
 
     // Pop from the stack
@@ -76,7 +73,7 @@ std::string Stack::pop() {
  * top of the stack
  * @param data data value to be pushed on to the stack 
 */
-void Stack::push(const std::string& data) {
+void Stack::push(const char data) {
 
     // Variables
     NodeLinkedList* newNode;
