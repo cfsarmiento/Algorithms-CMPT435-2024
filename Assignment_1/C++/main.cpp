@@ -27,6 +27,9 @@
 
 /* Helper Methods */
 
+/**
+ * Helper method to swap string elements in an array. 
+*/
 void swap(std::string& item1, std::string& item2) {
 
     // Variables
@@ -39,6 +42,9 @@ void swap(std::string& item1, std::string& item2) {
 
 } // swap
 
+/**
+ * Helper method used to shuffle an array in-place based off the Knuth Shuffle. Takes in an array to shuffle.
+*/
 void knuthShuffle(std::vector<std::string>& strings) {
 
     // Variables
@@ -55,6 +61,10 @@ void knuthShuffle(std::vector<std::string>& strings) {
 
 }; // knuthShuffle()
 
+/**
+ * Method that implements Selection Sort. Takes in an array of strings representing magic items. Returns the 
+ * number of comparisons needed to complete the sort. 
+*/
 int selectionSort(std::vector<std::string>& items) {
 
     // Variables
@@ -87,6 +97,10 @@ int selectionSort(std::vector<std::string>& items) {
 
 } // selectionSort()
 
+/**
+ * Method for Insertion Sort. Takes in an array of magic items in string format. Returns the number of comparisons
+ * needed. 
+*/
 int insertionSort(std::vector<std::string>& items) {
 
     // Variables
@@ -116,36 +130,201 @@ int insertionSort(std::vector<std::string>& items) {
 
 } // insertionSort()	
 
-int mergeSort(std::vector<std::string>& items) {
+/**
+ * Helper method for Merge sort to help with the merging of arrays. Takes in an array and indexes for the 
+ * beginning, middle, and end. Returns the number of comparisons needed.
+*/
+int mergeHelper(std::vector<std::string>& array, int left, int mid, int right) {
 
     // Variables
-    std::vector<std::string> lowerHalf = items;
-    std::vector<std::string> upperHalf = items;
-    if (items.size() > 1) {
+    int leftHalf = mid - left + 1;
+    int rightHalf = right - mid;
+    std::vector<std::string> leftArray(leftHalf);  // array of size equal to the # of elements in the left half
+    std::vector<std::string> rightArray(rightHalf);
+    int numComparisons = 0;
 
-        // Divide the list into two halves and sort
-        int m = items.size() / 2;
-        std::vector<std::string> slice(lowerHalf.begin() + 0, lowerHalf.begin() + m);
-        mergeSort(lowerHalf);
-        std::vector<std::string> slice(upperHalf.begin() + (m + 1), upperHalf.begin() + items.size());
-        mergeSort(upperHalf);
+    // Put the respective halves into the temp arrays
+    for (int i=0; i < leftHalf; i++) {
 
-        // Merge the lists
-        mergeHelper();
+        leftArray[i] = array[left + i];
 
+    } // for i
+    for (int j=0; j < rightHalf; j++) {
 
-    } // if
-} // mergeSort()
+        rightArray[j] = array[mid + 1 + j];
+        
+    } // for j
 
-void mergeHelper(std::vector<std::string>& array) {
+    // Merge the arrays together
+    int k = 0, l = 0, m = left;
+    while (k < leftHalf && l < rightHalf) {
 
+        numComparisons++;
+        if (leftArray[k] <= rightArray[l]) {
+
+            array[m] = leftArray[k];
+            k++;
+
+        } // if
+        else {
+
+            array[m] = rightArray[l];
+            l++;
+
+        } // else
+
+    } // while
+
+    // Copy remaining elements if there are any left
+    while (k < leftHalf) {
+
+        array[m] = leftArray[k];
+        k++;
+        m++;
+
+    } // while
+
+    while (l < rightHalf) {
+
+        array[m] = rightArray[l];
+        l++;
+        m++;
+
+    } // while
+
+    return numComparisons;
 
 } // mergeHelper
 
-int quickSort(std::vector<std::string>& items) {
+/**
+ * Method for Merge Sort implementation. Takes in an array of magic items (strings), as well as beginning and 
+ * end indexes. Returns the number of comparisons needed to complete the sort. 
+*/
+int mergeSort(std::vector<std::string>& items, int leftPos, int rightPos) {
+
+    // Variables
+    int totalComparisons = 0;
+
+    // Check to make sure there are still items to sort
+    if (leftPos < rightPos) {
+
+        // Get the midpoint
+        int midpoint = leftPos + (rightPos - leftPos) / 2;
+
+        // Sort the list using recursion
+        mergeSort(items, leftPos, midpoint);
+        mergeSort(items, midpoint + 1, rightPos);
+
+        // Merge the sorted arrays
+        totalComparisons = mergeHelper(items, leftPos, midpoint, rightPos);
+
+    } // if
+
+    return totalComparisons;
+
+} // mergeSort()
+
+/**
+ * Helper method for Quick Sort to choose a pivot point. Takes in an array as well as starting, middle, 
+ * and end indexes. Returns the pivot index.
+*/
+int choosePivot(std::vector<std::string>& array, int left, int mid, int right) {
+
+    // Variables
+    int pivotPostion = 0;
+
+    // Find middle value out of left, mid, and right indexes
+    if (array[left] < array[mid] && array[mid] < array[right])
+        pivotPostion = mid;
+
+    else if (array[mid] < array[left] && array[left] < array[right])
+        pivotPostion = left;
+
+    else
+        pivotPostion = right;
+    
+    return pivotPostion;
+
+} // choosePivot()
+
+/**
+ * Helper method for Quick Sort. Partitions the list to be sorted. Takes in an array, starting, 
+ * end, and pivot indexes. Returns an array of output containing the number of comparisons as well
+ * as an index for future sorting iterations. 
+*/
+std::vector<int> partition(std::vector<std::string>& array, int startPos, int endPos, int pivotPoint) {
+
+    // Variables
+    int l = startPos - 1;
+    int numComparisons = 0;
+    std::vector<int> output(2);
+
+    // Swap elements at the partition
+    swap(array[pivotPoint], array[endPos]);
+
+    // Sort through partitions
+    for (int i = startPos; i <= endPos - 1; i++) {
+
+        numComparisons++;
+        if (array[i] < array[endPos]) {
+            
+            l++;
+            swap(array[l], array[i]);
+
+        } // if
+
+    } // for i
+
+    // Final swap
+    swap(array[endPos], array[l+1]);
+
+    // Output
+    output[0] = l + 1;
+    output[1] = numComparisons;
+
+    return output;
+
+} // partition()
+
+/**
+ * Method that implements quick sort on an array of strings. Takes in an array, and the starting and end indexes.
+ * Returns the number of comparisons.
+*/
+int quickSort(std::vector<std::string>& items, int leftPos, int rightPos) {
+
+    //Variables
+    int totalComparisons = 0;
+    int pivot = 0;
+    int midpoint = 0;
+    int partitionPoint = 0;
+    std::vector<int> response(2);
+
+    // Base case
+    if (leftPos < rightPos) {
+
+        // Choose pivot
+        midpoint = leftPos + (rightPos - leftPos) / 2;
+        pivot = choosePivot(items, leftPos, midpoint, rightPos);
+
+        // Partition the array
+        response = partition(items, leftPos, rightPos, pivot);
+        partitionPoint = response[0];
+        totalComparisons += response[1];
+
+        // Recursive sort
+        totalComparisons += quickSort(items, leftPos, partitionPoint - 1);
+        totalComparisons += quickSort(items, partitionPoint + 1, rightPos);
+
+    } // if
+
+    return totalComparisons;
 
 } // quickSort()
 
+/**
+ * Main function for the program. This finds palindromes given a list of magic items and then shuffles and sorts
+ * the given array four times, using Selection, Insertion, Merge, and Quick Sort. 
+*/
 int main() {
 
     // Variables
@@ -243,7 +422,7 @@ int main() {
 
     // Print total palindrome count
     std::cout << "Total Palindromes: " << palindromeCount << std::endl;
-
+    
     /* Sorting */
 
     // Selection sort
@@ -258,14 +437,13 @@ int main() {
 
     // Merge sort
     knuthShuffle(magicItems);
-    mergeSortComparisons = mergeSort(magicItems);
+    mergeSortComparisons = mergeSort(magicItems, 0, magicItems.size() - 1);
     std::cout << "Merge Sort Total Comparisons: " << mergeSortComparisons << std::endl;
 
     // Quick sort
     knuthShuffle(magicItems);
-    quickSortComparisons = quickSort(magicItems);
+    quickSortComparisons = quickSort(magicItems, 0, magicItems.size() - 1);
     std::cout << "Quick Sort Total Comparisons: " << quickSortComparisons << std::endl;
-
 
     return 0;
 
