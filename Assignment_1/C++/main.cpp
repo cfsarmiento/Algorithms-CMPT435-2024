@@ -5,7 +5,7 @@
  * the list in various ways using selection	sort, insertion sort, merge sort, and quick sort, shuffiling it every time
  * and counting the number of comparisons.
  * Date Created: 9/28/24
- * Last Updated: 10/2/24
+ * Last Updated: 10/4/24
  * Compilation: g++ -std=c++11 -o PalindromeFinder main.cpp NodeLinkedList.cpp Queue.cpp Stack.cpp
  * Run Program: ./PalindromeFinder
  * -----------------------------------------------------------------------------------------------------------------------
@@ -116,10 +116,11 @@ int insertionSort(std::vector<std::string>& items) {
         numComparisons++;
         while (j >= 0 && items[j] > currentElement) {
 
+            numComparisons++;
             items[j+1] = items[j];
             j--;
 
-        } // while 
+        } // while
 
         // Move current element into proper place
         items[j+1] = currentElement;
@@ -212,11 +213,11 @@ int mergeSort(std::vector<std::string>& items, int leftPos, int rightPos) {
         int midpoint = leftPos + (rightPos - leftPos) / 2;
 
         // Sort the list using recursion
-        mergeSort(items, leftPos, midpoint);
-        mergeSort(items, midpoint + 1, rightPos);
+        totalComparisons += mergeSort(items, leftPos, midpoint);
+        totalComparisons += mergeSort(items, midpoint + 1, rightPos);
 
         // Merge the sorted arrays
-        totalComparisons = mergeHelper(items, leftPos, midpoint, rightPos);
+        totalComparisons += mergeHelper(items, leftPos, midpoint, rightPos);
 
     } // if
 
@@ -234,15 +235,17 @@ int choosePivot(std::vector<std::string>& array, int left, int mid, int right) {
     int pivotPostion = 0;
 
     // Find middle value out of left, mid, and right indexes
-    if (array[left] < array[mid] && array[mid] < array[right])
+    if ((array[left] <= array[mid] && array[mid] <= array[right]) || 
+        (array[right] <= array[mid] && array[mid] <= array[left]))
         pivotPostion = mid;
 
-    else if (array[mid] < array[left] && array[left] < array[right])
+    else if ((array[mid] <= array[left] && array[left] <= array[right]) || 
+             (array[right] <= array[left] && array[left] <= array[mid]))
         pivotPostion = left;
 
     else
         pivotPostion = right;
-    
+
     return pivotPostion;
 
 } // choosePivot()
@@ -276,10 +279,10 @@ std::vector<int> partition(std::vector<std::string>& array, int startPos, int en
     } // for i
 
     // Final swap
-    swap(array[endPos], array[l+1]);
+    swap(array[l+1], array[endPos]);
 
     // Output
-    output[0] = l + 1;
+    output[0] = l + 1;  // partition point
     output[1] = numComparisons;
 
     return output;
@@ -329,14 +332,19 @@ int main() {
 
     // Variables
     std::vector<std::string> magicItems;
+    std::vector<std::string> shuffledItems;
     std::string item = "";
     char character1 = ' ';
     char character2 = ' ';
     int palindromeCount = 0;
     int selectionSortComparisons = 0;
+    int selectionSortAvgComparisons = 0;
     int insertionSortComparisons = 0;
+    int insertionSortAvgComparisons = 0;
     int mergeSortComparisons = 0;
+    int mergeSortAvgComparisons = 0;
     int quickSortComparisons = 0;
+    int quickSortAvgComparisons = 0;
 
 
     /* Read in items from magicitems.txt into an array */
@@ -377,7 +385,7 @@ int main() {
 
             return std::tolower(c);
 
-        }); // lamda function for lowercase conversion
+        }); // lambda function for lowercase conversion
 
         // Define stack and queue objects with automatic stack allocation
         // With this syntax, the objects are auto-deleted from memory once out of scope (end of for i loop)
@@ -422,28 +430,65 @@ int main() {
 
     // Print total palindrome count
     std::cout << "Total Palindromes: " << palindromeCount << std::endl;
+    std::cout << std::endl;
     
     /* Sorting */
 
     // Selection sort
-    knuthShuffle(magicItems);
-    selectionSortComparisons = selectionSort(magicItems);
-    std::cout << "Selection Sort Total Comparisons: " << selectionSortComparisons << std::endl;
+    for (int i=0; i < 20; i++) {
+
+        shuffledItems = magicItems;
+        knuthShuffle(shuffledItems);
+        selectionSortComparisons = selectionSort(shuffledItems);
+        selectionSortAvgComparisons += selectionSortComparisons;
+        std::cout << "Selection Sort Total Comparisons (Run " << i + 1 << "): " << selectionSortComparisons << std::endl;
+
+    } // for i
+    selectionSortAvgComparisons = selectionSortAvgComparisons / 20;
+    std::cout << "Selection Sort Average Comparisons: " << selectionSortAvgComparisons << std::endl;
+    std::cout << std::endl;
 
     // Insertion sort
-    knuthShuffle(magicItems);
-    insertionSortComparisons = insertionSort(magicItems);
-    std::cout << "Insertion Sort Total Comparisons: " << insertionSortComparisons << std::endl;
+    for (int i=0; i < 20; i++) {
+
+        shuffledItems = magicItems;
+        knuthShuffle(shuffledItems);
+        insertionSortComparisons = insertionSort(shuffledItems);
+        insertionSortAvgComparisons += insertionSortComparisons;
+        std::cout << "Insertion Sort Total Comparisons (Run " << i + 1 << "): " << insertionSortComparisons << std::endl;
+
+    } // for i
+    insertionSortAvgComparisons = insertionSortAvgComparisons / 20;
+    std::cout << "Insertion Sort Average Comparisons: " << insertionSortAvgComparisons << std::endl;
+    std::cout << std::endl;
 
     // Merge sort
-    knuthShuffle(magicItems);
-    mergeSortComparisons = mergeSort(magicItems, 0, magicItems.size() - 1);
-    std::cout << "Merge Sort Total Comparisons: " << mergeSortComparisons << std::endl;
+    for (int i=0; i < 20; i++) {
 
+        shuffledItems = magicItems;
+        knuthShuffle(shuffledItems);
+        mergeSortComparisons = mergeSort(shuffledItems, 0, shuffledItems.size() - 1);
+        mergeSortAvgComparisons += mergeSortComparisons;
+        std::cout << "Merge Sort Total Comparisons (Run " << i + 1 << "): " << mergeSortComparisons << std::endl;
+
+    } // for i
+    mergeSortAvgComparisons = mergeSortAvgComparisons / 20;
+    std::cout << "Merge Sort Average Comparisons: " << mergeSortAvgComparisons << std::endl;
+    std::cout << std::endl;
+    
     // Quick sort
-    knuthShuffle(magicItems);
-    quickSortComparisons = quickSort(magicItems, 0, magicItems.size() - 1);
-    std::cout << "Quick Sort Total Comparisons: " << quickSortComparisons << std::endl;
+    for (int i=0; i < 20; i++) {
+
+        shuffledItems = magicItems;
+        knuthShuffle(shuffledItems);
+        quickSortComparisons = quickSort(shuffledItems, 0, shuffledItems.size() - 1);
+        quickSortAvgComparisons += quickSortComparisons;
+        std::cout << "Quick Sort Total Comparisons (Run " << i + 1 << "): " << quickSortComparisons << std::endl;
+
+    } // for i
+    quickSortAvgComparisons = quickSortAvgComparisons / 20;
+    std::cout << "Quick Sort Average Comparisons: " << quickSortAvgComparisons << std::endl;
+    std::cout << std::endl;
 
     return 0;
 
