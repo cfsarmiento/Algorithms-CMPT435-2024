@@ -220,7 +220,7 @@ int linearSearch(std::string target, std::vector<std::string> items) {
  * Method that searches for a target value recursievly using binary search. Takes in an a target value, an array of
  * items, start position, end position, and a flag value to determine if the target was found or not. 
 */
-int binarySearch(std::string target, std::vector<std::string> items, int startPos, int endPos, bool& flag) {
+int recursiveBinarySearch(std::string target, std::vector<std::string> items, int startPos, int endPos, bool& flag) {
 
     // Variables
     int start = startPos;
@@ -244,12 +244,55 @@ int binarySearch(std::string target, std::vector<std::string> items, int startPo
         
         } // if
         else if (target < items[mid])
-            numComparisons += binarySearch(target, items, start, mid - 1, flag);
+            numComparisons += recursiveBinarySearch(target, items, start, mid - 1, flag);
         
         else
-            numComparisons += binarySearch(target, items, mid + 1, end, flag);
+            numComparisons += recursiveBinarySearch(target, items, mid + 1, end, flag);
 
     } // if
+
+    return numComparisons;
+
+} // binarySearch()
+
+/**
+ * Method that searches for a target value using binary search. Takes in an a target value, an array of
+ * items, start position, end position, and a flag value to determine if the target was found or not. 
+*/
+int binarySearch(std::string target, std::vector<std::string> items, int startPos, int endPos) {
+    
+    // Variables
+    int low = startPos;
+    int high = endPos;
+    int mid = 0;
+    int numComparisons = 0;
+    bool found = false;
+
+    // Search for the value
+    while (!found && low <= high) {
+
+        // Get the midpoint
+        mid = low + (high - low) / 2;
+
+        // Compare
+        numComparisons++;
+        if (target == items[mid])
+            found = true;
+
+        else if (target < items[mid])
+            high = mid - 1;
+
+        else
+            low = mid + 1;
+
+    } // while
+
+    // Print results
+    if (found)
+        std::cout << "Binary Search found " << target << "." << std::endl;
+
+    else
+        std::cout << "Binary Search could not find " << target << "." << std::endl;
 
     return numComparisons;
 
@@ -271,7 +314,6 @@ int main() {
     double avgLinearComparisons = 0.0;
     int binarySearchComparisons = 0;
     double avgBinaryComparisons = 0.0;
-    bool found = false;
 
     /**
      * Read in items from magicitems.txt into an array 
@@ -323,18 +365,15 @@ int main() {
     std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << avgLinearComparisons << std::endl;
     std::cout << std::endl;
 
-    // Search for each of the itmes using binary search
+    // Sort the array for Binary Search
+    quickSort(magicItems, 0, magicItems.size() - 1);
+
+    // Search for each of the items using binary search
     for(int k=0; k < searchItems.size(); k++) {
 
         // Search for the item
-        binarySearchComparisons = binarySearch(searchItems[k], magicItems, 0, magicItems.size() - 1, found);
+        binarySearchComparisons = binarySearch(searchItems[k], magicItems, 0, magicItems.size() - 1);
         avgBinaryComparisons += binarySearchComparisons;
-
-        // Output results
-        if (found)
-            std::cout << "Binary Search found " << searchItems[k] << "." << std::endl;
-        else
-            std::cout << "Binary Search could not find " << searchItems[k] << "." << std::endl;
 
         // Output the number of comparisons
         std::cout << "(" << (k+1) << ") Comparisons used to find " << searchItems[k] << ": " << binarySearchComparisons << std::endl;
