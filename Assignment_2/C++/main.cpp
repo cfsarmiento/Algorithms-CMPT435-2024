@@ -4,7 +4,7 @@
  * Purpose: This program reads in a list of magic items and selects 42 random items to search within the bigger array
  * using linear, binary search and hashing, counting the number of comparisons.
  * Date Created: 10/10/24
- * Last Updated: 10/11/24
+ * Last Updated: 10/27/24
  * Compilation: g++ -std=c++11 -o SearchingMethods main.cpp
  * Run Program: ./SearchingMethods
  * -----------------------------------------------------------------------------------------------------------------------
