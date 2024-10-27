@@ -347,6 +347,9 @@ int main() {
     // Get a subarray of 42 random items to search for
     searchItems = getSearchItems(magicItems);
 
+    // Sort the original array for both Linear and Binary Search
+    quickSort(magicItems, 0, magicItems.size() - 1);
+
     // Search for each of the items using linear search
     for (int i=0; i < searchItems.size(); i++) {
 
@@ -364,9 +367,6 @@ int main() {
     avgLinearComparisons = avgLinearComparisons / searchItems.size();
     std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << avgLinearComparisons << std::endl;
     std::cout << std::endl;
-
-    // Sort the array for Binary Search
-    quickSort(magicItems, 0, magicItems.size() - 1);
 
     // Search for each of the items using binary search
     for(int k=0; k < searchItems.size(); k++) {
