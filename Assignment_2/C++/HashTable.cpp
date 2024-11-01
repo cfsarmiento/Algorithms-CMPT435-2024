@@ -69,10 +69,14 @@ HashTable::~HashTable() {
  * Method that creates the hashes for the hash table. Takes in the item to hash and returns the hash as an 
  * integer. Written by Dr. Labouseur. 
 */
-int HashTable::makeHashCode(const std::string& item) {
+int HashTable::makeHashCode(std::string item) {
 
    // Transform item to UPPER CASE.
-   transform(item.begin(), item.end(), item.begin(),::toupper);
+   transform(item.begin(), item.end(), item.begin(), [](unsigned char c) {
+
+    return std::toupper(c); 
+    
+    });
 
    // Iterate over all letters in the item string, totalling their ASCII values.
    int letterTotal = 0;

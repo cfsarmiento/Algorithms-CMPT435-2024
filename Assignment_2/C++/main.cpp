@@ -4,8 +4,8 @@
  * Purpose: This program reads in a list of magic items and selects 42 random items to search within the bigger array
  * using linear, binary search and hashing, counting the number of comparisons.
  * Date Created: 10/10/24
- * Last Updated: 10/27/24
- * Compilation: g++ -std=c++11 -o SearchingMethods main.cpp
+ * Last Updated: 10/31/24
+ * Compilation: g++ -std=c++20 -o SearchingMethods main.cpp HashTable.cpp NodeLinkedList.cpp
  * Run Program: ./SearchingMethods
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 2             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cctype>
 #include<cstdlib>  // random numbers for shuffle
+#include "HashTable.h" 
 
 // Types
 #include <string>
@@ -305,7 +306,7 @@ int binarySearch(std::string target, std::vector<std::string> items, int startPo
  * the given array four times, using Selection, Insertion, Merge, and Quick Sort. 
 */
 int main() {
-
+    
     // Variables
     std::vector<std::string> magicItems;
     std::vector<std::string> searchItems;
@@ -314,6 +315,8 @@ int main() {
     double avgLinearComparisons = 0.0;
     int binarySearchComparisons = 0;
     double avgBinaryComparisons = 0.0;
+    int hashingComparisons = 0;
+    double avgHashingComparisons = 0.0;
 
     /**
      * Read in items from magicitems.txt into an array 
@@ -369,26 +372,52 @@ int main() {
     std::cout << std::endl;
 
     // Search for each of the items using binary search
-    for(int k=0; k < searchItems.size(); k++) {
+    for(int j=0; j < searchItems.size(); j++) {
 
         // Search for the item
-        binarySearchComparisons = binarySearch(searchItems[k], magicItems, 0, magicItems.size() - 1);
+        binarySearchComparisons = binarySearch(searchItems[j], magicItems, 0, magicItems.size() - 1);
         avgBinaryComparisons += binarySearchComparisons;
 
         // Output the number of comparisons
-        std::cout << "(" << (k+1) << ") Comparisons used to find " << searchItems[k] << ": " << binarySearchComparisons << std::endl;
+        std::cout << "(" << (j+1) << ") Comparisons used to find " << searchItems[j] << ": " << binarySearchComparisons << std::endl;
         std::cout << std::endl;
 
-    } // for
+    } // for j
 
     // Print average comparisons
     avgBinaryComparisons = avgBinaryComparisons / searchItems.size();
     std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << avgBinaryComparisons << std::endl;
     std::cout << std::endl;
-    
+
     /**
      * Hashing
     */
+    
+    // Define the hashtable
+    HashTable hashTable;  // null constructor will initialize to size of 250, no need to define that here
+
+    // Load the magic items into the hash table
+    for (int k=0; k < searchItems.size(); k++)
+        hashTable.put(searchItems[k]);
+
+    // Retrieve each item from the hash table, keeping track of gets + comparisons
+    for (int l=0; l < searchItems.size(); l++) {
+
+        // Get the item
+        hashingComparisons = hashTable.get(searchItems[l]);
+        hashingComparisons++;
+        avgHashingComparisons += hashingComparisons;
+
+        // Print the number of comparisons
+        std::cout << "(" << (l+1) << ") Comparisons used to find " << searchItems[l] << ": " << hashingComparisons << std::endl;
+        std::cout << std::endl;
+
+    } // for l
+
+    // Print average comparisons
+    avgHashingComparisons = avgHashingComparisons / searchItems.size();
+    std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << avgHashingComparisons << std::endl;
+    std::cout << std::endl;
 
     return 0;
 

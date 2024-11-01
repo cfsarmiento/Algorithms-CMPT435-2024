@@ -24,7 +24,7 @@ class HashTable {
         int HASH_TABLE_SIZE;
 
         // Hash method
-        int makeHashCode(const std::string& item);
+        int makeHashCode(std::string item);
 
     public:
 
