@@ -8,7 +8,7 @@
  * Compilation: g++ -std=c++11 -o SearchingMethods main.cpp
  * Run Program: ./SearchingMethods
  * -----------------------------------------------------------------------------------------------------------------------
- * Assignment 1             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 2             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
@@ -385,6 +385,10 @@ int main() {
     avgBinaryComparisons = avgBinaryComparisons / searchItems.size();
     std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << avgBinaryComparisons << std::endl;
     std::cout << std::endl;
+    
+    /**
+     * Hashing
+    */
 
     return 0;
 
