@@ -4,7 +4,7 @@
  * Purpose: This program reads in a list of magic items and selects 42 random items to search within the bigger array
  * using linear, binary search and hashing, counting the number of comparisons.
  * Date Created: 10/10/24
- * Last Updated: 10/31/24
+ * Last Updated: 11/1/24
  * Compilation: g++ -std=c++20 -o SearchingMethods main.cpp HashTable.cpp NodeLinkedList.cpp
  * Run Program: ./SearchingMethods
  * -----------------------------------------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@
 /* Helper Methods */
 
 /**
- * Helper method to swap string elements in an array. 
+ * Helper method to swap string elements in an array. Takes in two strings as parameters.
 */
 void swap(std::string& item1, std::string& item2) {
 
@@ -140,25 +140,6 @@ int quickSort(std::vector<std::string>& items, int leftPos, int rightPos) {
 } // quickSort()
 
 /**
- * Helper method used to shuffle an array in-place based off the Knuth Shuffle. Takes in an array to shuffle.
-*/
-void knuthShuffle(std::vector<std::string>& strings) {
-
-    // Variables
-    int endPos = strings.size() - 1;
-    srand((unsigned) time(NULL));  // setting seed value
-
-    // Shuffle the array
-    for (int i = endPos; i >= 0; i--) {
-
-        int j = rand() % (i + 1);
-        swap(strings[i], strings[j]);
-
-    } // for 
-
-}; // knuthShuffle()
-
-/**
  * Method that gets a subarray of 42 random items given an array. Returns the subarray.
 */
 std::vector<std::string> getSearchItems(std::vector<std::string> items) {
@@ -184,8 +165,8 @@ std::vector<std::string> getSearchItems(std::vector<std::string> items) {
 } // getSearchItems()
 
 /**
- * Method that searchs for a target value in the array element by element. Returns the 
- * number of comparisons neccessary
+ * Method that searches for a target value in the array element by element. Takes in a string for the target and
+ * a vector or strings. Returns the number of comparisons neccessary.
 */
 int linearSearch(std::string target, std::vector<std::string> items) {
 
@@ -218,7 +199,7 @@ int linearSearch(std::string target, std::vector<std::string> items) {
 } // linearSearch()
 
 /**
- * Method that searches for a target value recursievly using binary search. Takes in an a target value, an array of
+ * Method that searches for a target value recursively using binary search. Takes in an a target value, an array of
  * items, start position, end position, and a flag value to determine if the target was found or not. 
 */
 int recursiveBinarySearch(std::string target, std::vector<std::string> items, int startPos, int endPos, bool& flag) {
@@ -257,8 +238,8 @@ int recursiveBinarySearch(std::string target, std::vector<std::string> items, in
 } // binarySearch()
 
 /**
- * Method that searches for a target value using binary search. Takes in an a target value, an array of
- * items, start position, end position, and a flag value to determine if the target was found or not. 
+ * Method that searches for a target value using binary search. Takes in an a target value, a vector of
+ * string items, start position, and end position. Returns the number of comparisons needed to find the target. 
 */
 int binarySearch(std::string target, std::vector<std::string> items, int startPos, int endPos) {
     
@@ -302,8 +283,8 @@ int binarySearch(std::string target, std::vector<std::string> items, int startPo
 /* Main Function */
 
 /**
- * Main function for the program. This finds palindromes given a list of magic items and then shuffles and sorts
- * the given array four times, using Selection, Insertion, Merge, and Quick Sort. 
+ * Main function for the program. This picks 42 random items from an array of magic items and finds the items in that
+ * larger array using Linear, Binary Search and Hashing. 
 */
 int main() {
     
@@ -334,7 +315,7 @@ int main() {
     } // if
 
     // Read in magic items to vector array
-    while( std::getline(file, item)) {
+    while(std::getline(file, item)) {
 
         magicItems.push_back(item);
 
@@ -397,8 +378,8 @@ int main() {
     HashTable hashTable;  // null constructor will initialize to size of 250, no need to define that here
 
     // Load the magic items into the hash table
-    for (int k=0; k < searchItems.size(); k++)
-        hashTable.put(searchItems[k]);
+    for (int k=0; k < magicItems.size(); k++)
+        hashTable.put(magicItems[k]);
 
     // Retrieve each item from the hash table, keeping track of gets + comparisons
     for (int l=0; l < searchItems.size(); l++) {
