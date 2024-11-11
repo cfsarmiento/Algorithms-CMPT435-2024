@@ -15,7 +15,7 @@
 #include <fstream>
 #include <algorithm>
 #include <cctype>
-
+#include "Graph.h" 
 
 // Types
 #include <string>
@@ -34,7 +34,7 @@ int main() {
     
     // Variables
     std::vector<std::string> magicItems;
-    std::vector<std::string> graphContents;
+    std::vector<Graph> graphs;
     std::vector<std::string> searchItems;
     std::string item = "";
     std::string content = "";
@@ -57,8 +57,15 @@ int main() {
     // Read in graph contents 
     while(std::getline(file, content)) {
 
-        if (content == "new graph")
-            std::cout << "Correct" << std::endl;
+        // Instantiating and savingnew graphs
+        if (content == "new graph") {
+
+            Graph newGraph;
+            graphs.push_back(newGraph);
+
+        } // if
+        
+
 
     } // while
 

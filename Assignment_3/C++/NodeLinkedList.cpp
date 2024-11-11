@@ -2,10 +2,10 @@
  * NodeLinkedList Class
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
- * Date Created: 10/31/24
- * Last Updated: 10/31/24
+ * Date Created: 11/10/24
+ * Last Updated: 11/10/24
  * -----------------------------------------------------------------------------------------------------------------------
- * Assignment 2             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
