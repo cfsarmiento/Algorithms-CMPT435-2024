@@ -21,6 +21,17 @@ class Graph {
 
         // Instance Variables
         std::vector<Vertex*> myVertices;
+        std::string myGraphName;
+
+        // Constructors
+        Graph();
+        Graph(std::string newName);
+
+        // Class Methods
+        Vertex* Graph::getVertex(std::string vertexID);
+        void Graph::addVertex(Vertex* newVertex);
+        void Graph::addEdge(std::string vertex1ID, std::string vertex2ID);
+
 
     
 }; // Class Graph

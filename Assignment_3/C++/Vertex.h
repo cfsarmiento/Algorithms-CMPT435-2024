@@ -26,11 +26,16 @@ class Vertex {
         // Null & Full Constructors
         Vertex();
         Vertex(std::string data);
-        
+
         // Getters
         std::string Vertex::getID();
         bool Vertex::isProccessed();
         std::vector<Vertex*> getNeighbors();
+
+        // Setters
+        void Vertex::setID(std::string newID);
+        void Vertex::setProccessedFlag();
+        void Vertex::addNeighbor(Vertex* newVertex);
 
 }; // Class Vertex
 

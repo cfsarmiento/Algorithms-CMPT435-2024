@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a vertex data structure
  * Date Created: 11/10/24
- * Last Updated: 11/10/24
+ * Last Updated: 11/12/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -24,14 +24,13 @@ Vertex::Vertex() {
 } // Null Constructor
 
 /**
- * Full Constructor for linked list node class
+ * Full Constructor for vertex class
  * 
- * @param data data for the node
- * @param next next node linked to current node (if any)
+ * @param newID ID for the vertex
  */
-Vertex::Vertex(std::string data) {  
+Vertex::Vertex(std::string newID) {  
 
-    myID = data;
+    myID = newID;
     
 } // Full Constructor
 
@@ -64,3 +63,32 @@ std::vector<Vertex*> Vertex::getNeighbors() {
     return myNeighbors;
 
 } // getNeighbors()
+
+/* Setters */
+
+/**
+ * Setter method to set the ID for the given vertex. Takes in a string as the ID and returns nothing. 
+*/
+void Vertex::setID(std::string newID) {
+
+    myID = newID;
+
+} // setID()
+
+/**
+ * Setter method for the processed flag. Sets the flag equal to true if called. 
+*/
+void Vertex::setProccessedFlag() {
+
+    proccessed = true;
+ 
+} // setProccessedFlag()
+
+/**
+ * Setter method to add a neighbor to the current vertex. Takes in a vertex pointer and returns nothing. 
+*/
+void Vertex::addNeighbor(Vertex* newVertex) {
+
+    myNeighbors.push_back(newVertex);
+
+} // addNeighbor()

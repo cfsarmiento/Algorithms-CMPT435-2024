@@ -57,7 +57,7 @@ int main() {
     // Read in graph contents 
     while(std::getline(file, content)) {
 
-        // Instantiating and savingnew graphs
+        // Instantiating and saving new graphs
         if (content == "new graph") {
 
             Graph newGraph;
