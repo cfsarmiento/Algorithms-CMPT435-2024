@@ -101,15 +101,6 @@ void Vertex::setID(std::string newID) {
 } // setID()
 
 /**
- * Setter method for the processed flag. Sets the flag equal to true if called. 
-*/
-void Vertex::setProccessedFlag() {
-
-    proccessed = true;
- 
-} // setProccessedFlag()
-
-/**
  * Setter method to add a neighbor to the current vertex. Takes in a vertex pointer and returns nothing. 
 */
 void Vertex::addNeighbor(Vertex* newVertex) {

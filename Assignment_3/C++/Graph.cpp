@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
  * Date Created: 11/10/24
- * Last Updated: 11/12/24
+ * Last Updated: 11/14/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -11,6 +11,7 @@
 // Dependencies
 #include "Graph.h" 
 #include <iostream>
+#include "Queue.h"
 
 /* Method Implementations */
 
@@ -188,3 +189,65 @@ void Graph::adjacencyMatrix() {
     } // for row
 
 } // adjacencyMatrix()
+
+/**
+ * Class method that does a depth first traversal of the graph recursively.
+*/
+void Graph::depthFirstTraversal(Vertex* currVertex) {
+
+    // Check if the vertex is processed
+    if (!currVertex->isProccessed()) {
+
+        // Print out the ID and recognize that the vertex has been proccessed
+        std::cout << currVertex->getID() << " ";
+        currVertex->proccessed = true;
+
+    } // if
+
+    // Move on to the neighbors
+    for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
+
+        // If the current vertex isn't processed yet, recursively process it
+        if (!(currVertex->myNeighbors[i]->isProccessed()))
+            depthFirstTraversal(currVertex->myNeighbors[i]);
+
+    } // for 
+
+} // depthFirstTraversal
+
+/**
+ * Class method that does a breadth first traversal of the graph.
+*/
+void Graph::breadthFirstTraversal(Vertex* initVertex) {
+
+    // Variables
+    Queue traversalQueue;
+    Vertex* currVertex;
+
+    // Load vertex into the queue
+    traversalQueue.enqueue(initVertex);
+    initVertex->proccessed = true;
+
+    // Iterate through the rest of the vertices
+    while (!traversalQueue.isEmpty()) {
+
+        // Get the vertex in the queue to process the neighbors
+        currVertex = traversalQueue.dequeue();
+        std::cout << currVertex->getID() << " ";
+
+        // Iterate through the neighbors
+        for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
+
+            // If the current vertex isn't processed yet, add the neighbor vertex to the queue
+            if (!(currVertex->myNeighbors[i]->isProccessed())) {
+
+                traversalQueue.enqueue(currVertex->myNeighbors[i]);
+                currVertex->myNeighbors[i]->proccessed = true;
+
+            } // if
+                
+        } // for
+
+    } // while
+
+} // depthFirstTraversal

@@ -11,26 +11,23 @@
 #ifndef NODELINKEDLIST_H
 #define NODELINKEDLIST_H 
 
-// Dependencies 
-#include <string>
-
 class NodeLinkedList {
 
      // Instance Variables
     public:
 
-        std::string myData;
+        Vertex* myData;
         NodeLinkedList* myNext;  
 
 
         // Null & Full Constructors
         NodeLinkedList();
-        NodeLinkedList(std::string data, NodeLinkedList* node);
+        NodeLinkedList(Vertex* data, NodeLinkedList* node);
 
         // Class Methods Headers
-        std::string getData();
+        Vertex* getData();
         NodeLinkedList* getNext();
-        void setData(std::string data);
+        void setData(Vertex* data);
         void setNext(NodeLinkedList* node);
 
 }; // Class NodeLinkedList

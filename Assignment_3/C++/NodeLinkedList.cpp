@@ -10,6 +10,7 @@
 
 // Dependencies
 #include "NodeLinkedList.h" 
+#include "Vertex.h"
 
 /* Method Implementations */
 /**
@@ -17,7 +18,7 @@
  */
 NodeLinkedList::NodeLinkedList() {
 
-    myData = " ";
+    myData;
     myNext = nullptr;
 
 } // Null Constructor
@@ -30,7 +31,7 @@ NodeLinkedList::NodeLinkedList() {
  * @param data data for the node
  * @param next next node linked to current node (if any)
  */
-NodeLinkedList::NodeLinkedList(std::string data, NodeLinkedList* node) {  // "const std::string& ... " passes variables by reference
+NodeLinkedList::NodeLinkedList(Vertex* data, NodeLinkedList* node) {  // "const std::string& ... " passes variables by reference
 
     myData = data;
     myNext = node;
@@ -41,7 +42,7 @@ NodeLinkedList::NodeLinkedList(std::string data, NodeLinkedList* node) {  // "co
 /**
  * Class method to return the data from the current node
 */
-std::string NodeLinkedList::getData() {
+Vertex* NodeLinkedList::getData() {
 
     return myData;
 
@@ -60,7 +61,7 @@ NodeLinkedList* NodeLinkedList::getNext() {
 /**
  * Class method that updates the data in the current node
 */
-void NodeLinkedList::setData(std::string data) {
+void NodeLinkedList::setData(Vertex* data) {
 
     myData = data;
 
