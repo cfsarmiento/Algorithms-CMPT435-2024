@@ -31,6 +31,7 @@ class Vertex {
         std::string Vertex::getID();
         bool Vertex::isProccessed();
         std::vector<Vertex*> getNeighbors();
+        std::string Vertex::getNeighborIDs();
 
         // Setters
         void Vertex::setID(std::string newID);

@@ -64,6 +64,31 @@ std::vector<Vertex*> Vertex::getNeighbors() {
 
 } // getNeighbors()
 
+/**
+ * Getter method that returns the IDs of the neighbors for the current vertex. Returns a string of IDs.
+*/
+std::string Vertex::getNeighborIDs() {
+
+    // Variables
+    std::vector<Vertex*> currNeighbors = getNeighbors();
+    std::string neighborIDs = "";
+
+    // Iterate through the current neighbors
+    for (int i = 0; i < currNeighbors.size(); i++) {
+
+        // Save the output of the IDs nicely 
+        if(i < currNeighbors.size() - 1)
+            neighborIDs += currNeighbors[i]->getID() + ", ";
+
+        else
+            neighborIDs += currNeighbors[i]->getID();
+
+    } // for
+
+    return neighborIDs;
+
+} // getNeighbors()
+
 /* Setters */
 
 /**

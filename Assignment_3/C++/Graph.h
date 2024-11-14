@@ -22,15 +22,23 @@ class Graph {
         // Instance Variables
         std::vector<Vertex*> myVertices;
         std::string myGraphName;
+        std::vector<std::vector<std::string>> myGraphMatrix;
+        int numVertices;
 
         // Constructors
         Graph();
         Graph(std::string newName);
 
-        // Class Methods
+        // Getters
         Vertex* Graph::getVertex(std::string vertexID);
+
+        // Setters
         void Graph::addVertex(Vertex* newVertex);
         void Graph::addEdge(std::string vertex1ID, std::string vertex2ID);
+
+        // Class Methods
+        void Graph::adjacencyList();
+        void Graph::adjacencyMatrix();
 
 
     

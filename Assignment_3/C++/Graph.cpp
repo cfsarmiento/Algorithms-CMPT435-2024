@@ -21,6 +21,8 @@ Graph::Graph() {
 
     myVertices;
     myGraphName = " ";
+    numVertices = 0;
+    myGraphMatrix.push_back({""});
 
 } // Null Constructor
 
@@ -29,7 +31,6 @@ Graph::Graph() {
  */
 Graph::Graph(std::string newName) {
 
-    myVertices;
     myGraphName = newName;
 
 } // Full Constructor
@@ -73,7 +74,20 @@ Vertex* Graph::getVertex(std::string vertexID) {
 */
 void Graph::addVertex(Vertex* newVertex) {
 
+    // Add vertex to the graph 
     myVertices.push_back(newVertex);
+    numVertices++;
+
+    // Add a row in the graph matrix
+    myGraphMatrix.push_back(std::vector<std::string>(numVertices + 1, "0"));
+
+    // Add column to the graph matrix
+    for (int i=0; i <= numVertices; i++)
+        myGraphMatrix[i].push_back("0");
+
+    // Set vertex ID for the matrix
+    myGraphMatrix[numVertices][0] = newVertex->getID(); 
+    myGraphMatrix[0][numVertices] = newVertex->getID();
 
 } // addVertex()
 
@@ -86,12 +100,14 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
     // Variables
     Vertex* vertex1;
     Vertex* vertex2;
-    
+    int start = -1;
+    int end = -1;
+
     // Get both of the verticies
     vertex1 = getVertex(vertex1ID);
     vertex2 = getVertex(vertex2ID);
 
-    // Add an edge between them if both verticies exist
+    // Add an edge between them if both vertices exist
     if (vertex1 && vertex2) {
 
         vertex1->addNeighbor(vertex2);
@@ -105,6 +121,70 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
     else
         std::cout << "Could not add an edge between " << vertex1ID << " and " << vertex2ID << "." << std::endl;
 
+    // Find the index at where the vertices exist in the adjacency matrix
+    for (int i = 1; i <= numVertices; i++) {
+
+        if (myGraphMatrix[i][0] == vertex1ID)
+            start = i;
+        
+        if (myGraphMatrix[0][i] == vertex2ID)
+            end = i;
+
+    } // for i
+
+    // Add edge to the adjacency matrix
+    myGraphMatrix[start][end] = "1";
+    myGraphMatrix[end][start] = "1";
+
 } // addEdge()
 
 /* Class Methods */
+
+/**
+ * Class method that outputs an adjacency list for the graph
+*/
+void Graph::adjacencyList() {
+
+    // Variables
+    std::string currID = " ";
+    std::string neighbors = " ";
+
+    // Iterate through each vertex in the graph to output the IDs of each vertex
+    std::cout << "Adjacency List" << std::endl;
+    for (int i = 0; i < myVertices.size(); i++) {
+
+        // Get the vertex ID
+        currID = myVertices[i]->getID();
+
+        // Get vertex neighbors
+        neighbors = myVertices[i]->getNeighborIDs();
+
+        // Print out the row for the adjacency list
+        std::cout << currID << ": " << neighbors << std::endl;
+
+    } // for i 
+
+    std::cout << std::endl;
+
+} // adjacencyList()
+
+/**
+ * Class method that prints out the adjacency matrix for the graph. 
+*/
+void Graph::adjacencyMatrix() {
+
+    // Iterate through each row
+    for (const auto& row : myGraphMatrix) {
+
+        // Iterate through each cell and print out the value
+        for (const auto& cell : row) {
+
+            std::cout << (cell.empty() ? "0" : cell) << " ";
+
+        } // for cell
+
+        std::cout << std::endl;
+
+    } // for row
+
+} // adjacencyMatrix()
