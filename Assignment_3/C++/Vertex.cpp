@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a vertex data structure
  * Date Created: 11/10/24
- * Last Updated: 11/12/24
+ * Last Updated: 11/14/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */

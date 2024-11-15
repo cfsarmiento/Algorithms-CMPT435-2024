@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: 
  * Date Created: 11/10/24
- * Last Updated: 11/10/24
+ * Last Updated: 11/14/24
  * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp
  * Run Program: ./GraphsAndBSTs
  * ---------------------------------------------------------------------------------------------------------------------------
@@ -106,10 +106,28 @@ int main() {
     // Iterate through the graphs and make the required output (matrix, adj. list, traversals)
     for (int i=0; i < graphs.size(); i++) {
 
+        // Print the adjacency matrix
+        // TODO: remove extra column of zeros
+        graphs[i].adjacencyMatrix();
+
         // Print the adjacency list
         graphs[i].adjacencyList();
-        
+
+        // Print the depth-first traversal
+        std::cout << "Depth-First Traversal:" << std::endl;
+        graphs[i].depthFirstTraversal(graphs[i].myVertices[0]);
+        std::cout << std::endl;
+        std::cout << std::endl;
+
+        // Print the breadth-first traversal
+        // TODO: unexpected, wrong output
+        std::cout << "Breadth-First Traversal:" << std::endl;
+        graphs[i].breadthFirstTraversal(graphs[i].myVertices[0]);
+        std::cout << std::endl;
+        std::cout << std::endl;
+
     } // for i
+
     /**
      * Read in items from magicitems.txt into an array 
     

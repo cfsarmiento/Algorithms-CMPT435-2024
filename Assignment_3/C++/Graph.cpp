@@ -128,9 +128,6 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
 
         vertex1->addNeighbor(vertex2);
         vertex2->addNeighbor(vertex1);
-        
-        // Let the user know that the edges have been added
-        std::cout << "Added an edge between " << vertex1ID << " and " << vertex2ID << "." << std::endl;
 
     } // if
 
@@ -190,6 +187,7 @@ void Graph::adjacencyList() const {
 void Graph::adjacencyMatrix() const {
 
     // Iterate through each row
+    std::cout << "Adjacency Matrix:" << std::endl;
     for (const auto& row : myGraphMatrix) {
 
         // Iterate through each cell and print out the value
@@ -202,6 +200,8 @@ void Graph::adjacencyMatrix() const {
         std::cout << std::endl;
 
     } // for row
+
+    std::cout << std::endl;
 
 } // adjacencyMatrix()
 
@@ -235,7 +235,7 @@ void Graph::depthFirstTraversal(Vertex* currVertex) {
 
     else
         std::cout << "That vertex does not exist." << std::endl;
-
+    
 } // depthFirstTraversal
 
 /**

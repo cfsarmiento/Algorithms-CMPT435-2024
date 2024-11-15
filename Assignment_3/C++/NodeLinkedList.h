@@ -2,8 +2,8 @@
  * NodeLinkedList Header File
  * Author: Christian Sarmiento
  * Purpose: Header file for NodeLinkedList class. Allows it to be used in other files. 
- * Date Created: 10/31/24
- * Last Updated: 10/31/24
+ * Date Created: 11/10/24
+ * Last Updated: 11/14/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 2             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
