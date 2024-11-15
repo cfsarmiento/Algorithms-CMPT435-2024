@@ -18,7 +18,7 @@
  */
 NodeLinkedList::NodeLinkedList() {
 
-    myData;
+    myData = nullptr;
     myNext = nullptr;
 
 } // Null Constructor
@@ -31,7 +31,7 @@ NodeLinkedList::NodeLinkedList() {
  * @param data data for the node
  * @param next next node linked to current node (if any)
  */
-NodeLinkedList::NodeLinkedList(Vertex* data, NodeLinkedList* node) {  // "const std::string& ... " passes variables by reference
+NodeLinkedList::NodeLinkedList(Vertex* data, NodeLinkedList* node) {
 
     myData = data;
     myNext = node;

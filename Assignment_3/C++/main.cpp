@@ -4,9 +4,9 @@
  * Purpose: 
  * Date Created: 11/10/24
  * Last Updated: 11/10/24
- * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp
+ * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp
  * Run Program: ./GraphsAndBSTs
- * -----------------------------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cctype>
 #include "Graph.h" 
+#include <sstream>
 
 // Types
 #include <string>
@@ -38,6 +39,11 @@ int main() {
     std::vector<std::string> searchItems;
     std::string item = "";
     std::string content = "";
+    int currGraphIndex = -1;
+    std::string newVertexID = " ";
+    std::string newEdge1 = " ";
+    std::string newEdge2 = " ";
+    std::string tempWord = " ";  // variable to save arbitrary words while processing
 
     /**
      * Read in contents from graphs1.txt into an array
@@ -62,16 +68,48 @@ int main() {
 
             Graph newGraph;
             graphs.push_back(newGraph);
+            currGraphIndex++;
 
         } // if
-        
 
+        // Adding vertices to the graph
+        else if (content.find("add vertex") != std::string::npos) {
+            
+            // Create vertex object and give it an ID
+            newVertexID = content.substr(content.find("add vertex") + std::string("add vertex").size() + 1);
+            Vertex* vertex = new Vertex(newVertexID);
+            graphs[currGraphIndex].addVertex(vertex);
+
+        } // else if
+
+        // Adding edges to the graph
+        else if (content.find("add edge") != std::string::npos) {
+            
+            // Parse out the vertexIDs to add the edges
+            std::istringstream stream(content);
+            stream >> tempWord;
+            stream >> tempWord;
+            stream >> newEdge1;
+            stream >> tempWord;
+            stream >> newEdge2;
+
+            // Add the edge between the vertices
+            graphs[currGraphIndex].addEdge(newEdge1, newEdge2);
+
+        } // else if
 
     } // while
 
-    // Close magicitems.txt
+    // Close graphs1.txt
     file.close();
 
+    // Iterate through the graphs and make the required output (matrix, adj. list, traversals)
+    for (int i=0; i < graphs.size(); i++) {
+
+        // Print the adjacency list
+        graphs[i].adjacencyList();
+        
+    } // for i
     /**
      * Read in items from magicitems.txt into an array 
     

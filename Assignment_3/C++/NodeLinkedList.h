@@ -8,6 +8,9 @@
  * Assignment 2             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
+// Dependencies
+#include "Vertex.h"
+
 #ifndef NODELINKEDLIST_H
 #define NODELINKEDLIST_H 
 

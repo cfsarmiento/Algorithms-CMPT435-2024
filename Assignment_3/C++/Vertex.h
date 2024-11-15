@@ -28,14 +28,14 @@ class Vertex {
         Vertex(std::string data);
 
         // Getters
-        std::string Vertex::getID();
-        bool Vertex::isProccessed();
+        std::string getID();
+        bool isProccessed();
         std::vector<Vertex*> getNeighbors();
-        std::string Vertex::getNeighborIDs();
+        std::string getNeighborIDs();
 
         // Setters
-        void Vertex::setID(std::string newID);
-        void Vertex::addNeighbor(Vertex* newVertex);
+        void setID(std::string newID);
+        void addNeighbor(Vertex* newVertex);
 
 }; // Class Vertex
 

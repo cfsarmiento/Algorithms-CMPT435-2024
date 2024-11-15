@@ -28,19 +28,20 @@ class Graph {
         // Constructors
         Graph();
         Graph(std::string newName);
+        //~Graph();
 
         // Getters
-        Vertex* Graph::getVertex(std::string vertexID);
+        Vertex* getVertex(std::string vertexID) const;
 
         // Setters
-        void Graph::addVertex(Vertex* newVertex);
-        void Graph::addEdge(std::string vertex1ID, std::string vertex2ID);
+        void addVertex(Vertex* newVertex);
+        void addEdge(std::string vertex1ID, std::string vertex2ID);
 
         // Class Methods
-        void Graph::adjacencyList();
-        void Graph::adjacencyMatrix();
-        void Graph::depthFirstTraversal(Vertex* currVertex);
-        void Graph::breadthFirstTraversal(Vertex* currVertex);
+        void adjacencyList() const;
+        void adjacencyMatrix() const;
+        void depthFirstTraversal(Vertex* currVertex);
+        void breadthFirstTraversal(Vertex* currVertex);
     
 }; // Class Graph
 

@@ -20,7 +20,6 @@
  */
 Graph::Graph() {
 
-    myVertices;
     myGraphName = " ";
     numVertices = 0;
     myGraphMatrix.push_back({""});
@@ -36,16 +35,32 @@ Graph::Graph(std::string newName) {
 
 } // Full Constructor
 
+/**
+ * Deconstructor for graph class
+Graph::~Graph() {
+
+    // Iterate through each Vertex pointer and delete it
+    for (Vertex* vertex : myVertices) {
+
+        delete vertex;
+
+    } // for
+
+    myVertices.clear(); // Clear the vector to remove dangling pointers
+
+} // Deconstructor
+*/
+
 /* Getters */
 
 /**
  * Getter method that gets a given vertex in the current graph. Takes in a vertex ID as a string. Returns
  * a pointer to the vertex requested.
 */
-Vertex* Graph::getVertex(std::string vertexID) {
+Vertex* Graph::getVertex(std::string vertexID) const {
 
     // Variables
-    Vertex* foundVertex;
+    Vertex* foundVertex = nullptr;
     bool found = false;
 
     // Iterate through current verticies
@@ -56,7 +71,7 @@ Vertex* Graph::getVertex(std::string vertexID) {
             
             // if found save the pointer to return to the user
             foundVertex = myVertices[i];
-            found == true;
+            found = true;
 
         } // if
 
@@ -144,7 +159,7 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
 /**
  * Class method that outputs an adjacency list for the graph
 */
-void Graph::adjacencyList() {
+void Graph::adjacencyList() const {
 
     // Variables
     std::string currID = " ";
@@ -172,7 +187,7 @@ void Graph::adjacencyList() {
 /**
  * Class method that prints out the adjacency matrix for the graph. 
 */
-void Graph::adjacencyMatrix() {
+void Graph::adjacencyMatrix() const {
 
     // Iterate through each row
     for (const auto& row : myGraphMatrix) {
@@ -195,23 +210,31 @@ void Graph::adjacencyMatrix() {
 */
 void Graph::depthFirstTraversal(Vertex* currVertex) {
 
-    // Check if the vertex is processed
-    if (!currVertex->isProccessed()) {
+    // Check that the vertex is valid
+    if (currVertex) {
 
-        // Print out the ID and recognize that the vertex has been proccessed
-        std::cout << currVertex->getID() << " ";
-        currVertex->proccessed = true;
+        // Check if the vertex is processed
+        if (!currVertex->isProccessed()) {
+
+            // Print out the ID and recognize that the vertex has been proccessed
+            std::cout << currVertex->getID() << " ";
+            currVertex->proccessed = true;
+
+        } // if
+
+        // Move on to the neighbors
+        for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
+
+            // If the current vertex isn't processed yet, recursively process it
+            if (!(currVertex->myNeighbors[i]->isProccessed()))
+                depthFirstTraversal(currVertex->myNeighbors[i]);
+
+        } // for 
 
     } // if
 
-    // Move on to the neighbors
-    for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
-
-        // If the current vertex isn't processed yet, recursively process it
-        if (!(currVertex->myNeighbors[i]->isProccessed()))
-            depthFirstTraversal(currVertex->myNeighbors[i]);
-
-    } // for 
+    else
+        std::cout << "That vertex does not exist." << std::endl;
 
 } // depthFirstTraversal
 
@@ -224,30 +247,37 @@ void Graph::breadthFirstTraversal(Vertex* initVertex) {
     Queue traversalQueue;
     Vertex* currVertex;
 
-    // Load vertex into the queue
-    traversalQueue.enqueue(initVertex);
-    initVertex->proccessed = true;
+    if (initVertex) {
 
-    // Iterate through the rest of the vertices
-    while (!traversalQueue.isEmpty()) {
+        // Load vertex into the queue
+        traversalQueue.enqueue(initVertex);
+        initVertex->proccessed = true;
 
-        // Get the vertex in the queue to process the neighbors
-        currVertex = traversalQueue.dequeue();
-        std::cout << currVertex->getID() << " ";
+        // Iterate through the rest of the vertices
+        while (!traversalQueue.isEmpty()) {
 
-        // Iterate through the neighbors
-        for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
+            // Get the vertex in the queue to process the neighbors
+            currVertex = traversalQueue.dequeue();
+            std::cout << currVertex->getID() << " ";
 
-            // If the current vertex isn't processed yet, add the neighbor vertex to the queue
-            if (!(currVertex->myNeighbors[i]->isProccessed())) {
+            // Iterate through the neighbors
+            for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
 
-                traversalQueue.enqueue(currVertex->myNeighbors[i]);
-                currVertex->myNeighbors[i]->proccessed = true;
+                // If the current vertex isn't processed yet, add the neighbor vertex to the queue
+                if (!(currVertex->myNeighbors[i]->isProccessed())) {
 
-            } // if
-                
-        } // for
+                    traversalQueue.enqueue(currVertex->myNeighbors[i]);
+                    currVertex->myNeighbors[i]->proccessed = true;
 
-    } // while
+                } // if
+                    
+            } // for
+
+        } // while
+
+    } // if
+
+    else
+        std::cout << "That vertex does not exist." << std::endl;
 
 } // depthFirstTraversal
