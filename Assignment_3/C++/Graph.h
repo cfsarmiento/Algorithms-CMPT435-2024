@@ -38,6 +38,7 @@ class Graph {
         void addEdge(std::string vertex1ID, std::string vertex2ID);
 
         // Class Methods
+        void resetProcessedFlag();
         void adjacencyList() const;
         void adjacencyMatrix() const;
         void depthFirstTraversal(Vertex* currVertex);

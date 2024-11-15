@@ -154,6 +154,17 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
 /* Class Methods */
 
 /**
+ * Class method that resets all the processed flags for the vertices to false. To be called after doing a traversal.
+*/
+void Graph::resetProcessedFlag() {
+
+    // Iterate through the vertices in the graph and set processed to false
+    for (int i = 0; i < myVertices.size(); i++)
+        myVertices[i]->proccessed = false;
+
+} // resetProcessedFlag()
+
+/**
  * Class method that outputs an adjacency list for the graph
 */
 void Graph::adjacencyList() const {

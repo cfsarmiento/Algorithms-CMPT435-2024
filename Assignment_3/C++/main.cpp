@@ -108,10 +108,10 @@ int main() {
 
         // Print the adjacency matrix
         // TODO: remove extra column of zeros
-        graphs[i].adjacencyMatrix();
+        //graphs[i].adjacencyMatrix();
 
         // Print the adjacency list
-        graphs[i].adjacencyList();
+        //graphs[i].adjacencyList();
 
         // Print the depth-first traversal
         std::cout << "Depth-First Traversal:" << std::endl;
@@ -120,7 +120,7 @@ int main() {
         std::cout << std::endl;
 
         // Print the breadth-first traversal
-        // TODO: unexpected, wrong output
+        graphs[i].resetProcessedFlag();
         std::cout << "Breadth-First Traversal:" << std::endl;
         graphs[i].breadthFirstTraversal(graphs[i].myVertices[0]);
         std::cout << std::endl;
