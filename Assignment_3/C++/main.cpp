@@ -108,23 +108,43 @@ int main() {
 
         // Print the adjacency matrix
         // TODO: remove extra column of zeros
-        //graphs[i].adjacencyMatrix();
+        graphs[i].adjacencyMatrix();
 
         // Print the adjacency list
-        //graphs[i].adjacencyList();
+        graphs[i].adjacencyList();
 
         // Print the depth-first traversal
         std::cout << "Depth-First Traversal:" << std::endl;
-        graphs[i].depthFirstTraversal(graphs[i].myVertices[0]);
-        std::cout << std::endl;
-        std::cout << std::endl;
+        for (int j=0; j < graphs[i].myVertices.size(); j++) {  // iterate to make sure disconnected graphs are traversed
+
+            // Check if the vertex is processed
+            if (!(graphs[i].myVertices[j]->isProccessed())) {
+                
+                std::cout << "Component " << j + 1 << ":" << std::endl;
+                graphs[i].depthFirstTraversal(graphs[i].myVertices[j]);
+                std::cout << std::endl;
+                std::cout << std::endl;
+
+            } // if
+
+        } // for j
 
         // Print the breadth-first traversal
         graphs[i].resetProcessedFlag();
         std::cout << "Breadth-First Traversal:" << std::endl;
-        graphs[i].breadthFirstTraversal(graphs[i].myVertices[0]);
-        std::cout << std::endl;
-        std::cout << std::endl;
+        for (int k=0; k < graphs[i].myVertices.size(); k++) {  
+
+            // Check if the vertex is processed
+            if (!(graphs[i].myVertices[k]->isProccessed())) {
+                
+                std::cout << "Component " << k + 1 << ":" << std::endl;
+                graphs[i].breadthFirstTraversal(graphs[i].myVertices[k]);
+                std::cout << std::endl;
+                std::cout << std::endl;
+
+            } // if
+
+        } // for k
 
     } // for i
 
