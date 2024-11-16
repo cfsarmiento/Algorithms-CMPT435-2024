@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
  * Date Created: 11/14/24
- * Last Updated: 11/14/24
+ * Last Updated: 11/15/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -17,7 +17,7 @@
  */
 NodeBinaryTree::NodeBinaryTree() {
 
-    myData = ' ';
+    myData = "null";
     myLeft = nullptr;
     myRight = nullptr;
 
@@ -32,11 +32,9 @@ NodeBinaryTree::NodeBinaryTree() {
  * @param left left node linked to current node (if any)
  * @param right right node linked to current node (if any)
  */
-NodeBinaryTree::NodeBinaryTree(std::string data, NodeBinaryTree* left, NodeBinaryTree* right) {  // "const std::string& ... " passes variables by reference
+NodeBinaryTree::NodeBinaryTree(std::string data) {  // "const std::string& ... " passes variables by reference
 
     myData = data;
-    myLeft = left;
-    myRight = right;
     
 } // Full Constructor
 

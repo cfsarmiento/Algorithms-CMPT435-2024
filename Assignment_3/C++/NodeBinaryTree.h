@@ -26,7 +26,7 @@ class NodeBinaryTree {
 
         // Null & Full Constructors
         NodeBinaryTree();
-        NodeBinaryTree(std::string data, NodeBinaryTree* left, NodeBinaryTree* right);
+        NodeBinaryTree(std::string data);
 
         // Getters
         std::string getData();

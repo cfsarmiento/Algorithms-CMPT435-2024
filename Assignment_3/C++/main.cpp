@@ -3,10 +3,10 @@
  * Author: Christian Sarmiento
  * Purpose: 
  * Date Created: 11/10/24
- * Last Updated: 11/14/24
- * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp
+ * Last Updated: 11/15/24
+ * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp BinarySearchTree.cpp
  * Run Program: ./GraphsAndBSTs
- * ---------------------------------------------------------------------------------------------------------------------------
+ * ------------------------------------------------------------------------------------------------------------------------------------------------
  * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cctype>
 #include "Graph.h" 
+#include "BinarySearchTree.h"
 #include <sstream>
 
 // Types
@@ -23,7 +24,10 @@
 #include <vector>  // C++ dynamic list
 
 /* Helper Methods */
+void buildBinaryTree(NodeBinaryTree node) {
 
+    // 
+} // buildBinaryTree
 
 
 /* Main Function */
@@ -38,22 +42,26 @@ int main() {
     std::vector<Graph> graphs;
     std::vector<std::string> searchItems;
     std::string item = "";
+    std::string searchItem = "";
     std::string content = "";
     int currGraphIndex = -1;
     std::string newVertexID = " ";
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
+    int bstComparisons = 0;
+    double avgBSTComparisons = 0.0;
+    int componentCount = 0;
 
     /**
-     * Read in contents from graphs1.txt into an array
+     * Graphs
     */
     
     // Open graphs1.txt file
-    std::ifstream file("graphs1.txt");
+    std::ifstream graphFile("graphs1.txt");
 
     // Check if file opens successfully
-    if (!file.is_open()) {
+    if (!graphFile.is_open()) {
 
         std::cerr << "Failed to open file." << std::endl;
         return 1;
@@ -61,7 +69,7 @@ int main() {
     } // if
 
     // Read in graph contents 
-    while(std::getline(file, content)) {
+    while(std::getline(graphFile, content)) {
 
         // Instantiating and saving new graphs
         if (content == "new graph") {
@@ -101,7 +109,7 @@ int main() {
     } // while
 
     // Close graphs1.txt
-    file.close();
+    graphFile.close();
 
     // Iterate through the graphs and make the required output (matrix, adj. list, traversals)
     for (int i=0; i < graphs.size(); i++) {
@@ -114,13 +122,15 @@ int main() {
         graphs[i].adjacencyList();
 
         // Print the depth-first traversal
+        componentCount = 0;
         std::cout << "Depth-First Traversal:" << std::endl;
         for (int j=0; j < graphs[i].myVertices.size(); j++) {  // iterate to make sure disconnected graphs are traversed
 
             // Check if the vertex is processed
             if (!(graphs[i].myVertices[j]->isProccessed())) {
                 
-                std::cout << "Component " << j + 1 << ":" << std::endl;
+                componentCount++;
+                std::cout << "Component " << componentCount << ":" << std::endl;
                 graphs[i].depthFirstTraversal(graphs[i].myVertices[j]);
                 std::cout << std::endl;
                 std::cout << std::endl;
@@ -131,13 +141,15 @@ int main() {
 
         // Print the breadth-first traversal
         graphs[i].resetProcessedFlag();
+        componentCount = 0;
         std::cout << "Breadth-First Traversal:" << std::endl;
         for (int k=0; k < graphs[i].myVertices.size(); k++) {  
 
             // Check if the vertex is processed
             if (!(graphs[i].myVertices[k]->isProccessed())) {
                 
-                std::cout << "Component " << k + 1 << ":" << std::endl;
+                componentCount++;
+                std::cout << "Component " << componentCount << ":" << std::endl;
                 graphs[i].breadthFirstTraversal(graphs[i].myVertices[k]);
                 std::cout << std::endl;
                 std::cout << std::endl;
@@ -149,14 +161,14 @@ int main() {
     } // for i
 
     /**
-     * Read in items from magicitems.txt into an array 
-    
+     * Binary Search Tree
+    */
 
     // Open magicitems.txt file
-    std::ifstream file("magicitems.txt");
+    std::ifstream bstFile("magicitems.txt");
 
     // Check if file open successfully
-    if (!file.is_open()) {
+    if (!bstFile.is_open()) {
 
         std::cerr << "Failed to open file." << std::endl;
         return 1;
@@ -164,15 +176,60 @@ int main() {
     } // if
 
     // Read in magic items to vector array
-    while(std::getline(file, item)) {
+    while(std::getline(bstFile, item)) {
 
         magicItems.push_back(item);
 
     } // while
 
     // Close magicitems.txt
-    file.close();
+    bstFile.close();
 
-    */
+    // Define binary search tree
+    BinarySearchTree binaryTree;
 
+    // Load the items into a binary search tree
+    for (int l = 0; l < magicItems.size(); l++) {
+
+        std::cout << magicItems[l] << ": " << " ";
+        binaryTree.addData(magicItems[l]);
+        std::cout << std::endl;
+
+    } // for l
+
+    // Perform an in-order traversal
+    binaryTree.treeTraversal();
+
+    // Load items to look for
+    std::ifstream searchFile("magicitems-find-in-bst.txt");
+
+    // Check if file open successfully
+    if (!searchFile.is_open()) {
+
+        std::cerr << "Failed to open file." << std::endl;
+        return 1;
+
+    } // if
+
+    // Read in magic items to vector array
+    while(std::getline(searchFile, searchItem)) {
+
+        searchItems.push_back(searchItem);
+
+    } // while
+
+    // Close magicitems.txt
+    searchFile.close();
+
+    // Look for each of the items in the tree
+    for (int m=0; m < searchItems.size(); m++) {
+
+        bstComparisons = binaryTree.findItem(searchItems[m]);
+        avgBSTComparisons += bstComparisons;
+        std::cout << "Comparisons for " << searchItems[m] << ": " << bstComparisons << std::endl;
+
+    } // for m
+
+    std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << (avgBSTComparisons / searchItems.size()) << std::endl;
+    
 }; // main()
