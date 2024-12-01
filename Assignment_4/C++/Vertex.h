@@ -2,10 +2,10 @@
  * Vertex Header File
  * Author: Christian Sarmiento
  * Purpose: Header file for Vertex class. Allows it to be used in other files. 
- * Date Created: 11/10/24
- * Last Updated: 11/14/24
+ * Date Created: 11/30/24
+ * Last Updated: 11/30/24
  * -----------------------------------------------------------------------------------------------------------------------
- * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 #ifndef VERTEX_H

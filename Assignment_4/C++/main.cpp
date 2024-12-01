@@ -1,13 +1,15 @@
 /**
- * Graphs & Binary Search Trees - C++
+ * SSSP & Spice Heist - C++
  * Author: Christian Sarmiento
- * Purpose: This program creates an undirected graph object from a text file and also creates a binary search tree.
- * Date Created: 11/10/24
- * Last Updated: 11/15/24
+ * Purpose: This program creates a directed graph from a text file and conducts a Bellman-Ford Single Source Shortest
+ * path algorithm on the graph. We also conduct a spice heist given a text file where we must solve a variation of a 
+ * fractional knapsack problem with out directed graph. 
+ * Date Created: 11/30/24
+ * Last Updated: 11/30/24
  * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp BinarySearchTree.cpp
- * Run Program: ./GraphsAndBSTs
+ * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
- * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
@@ -22,12 +24,6 @@
 // Types
 #include <string>
 #include <vector>  // C++ dynamic list
-
-/* Helper Methods */
-void buildBinaryTree(NodeBinaryTree node) {
-
-    // 
-} // buildBinaryTree
 
 
 /* Main Function */
@@ -49,16 +45,17 @@ int main() {
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
+    std::string weight = " ";
     int bstComparisons = 0;
     double avgBSTComparisons = 0.0;
     int componentCount = 0;
 
     /**
-     * Graphs
+     * SSSP
     */
     
-    // Open graphs1.txt file
-    std::ifstream graphFile("graphs1.txt");
+    // Open graphs2.txt file
+    std::ifstream graphFile("graphs2.txt");
 
     // Check if file opens successfully
     if (!graphFile.is_open()) {
@@ -100,7 +97,12 @@ int main() {
             stream >> newEdge1;
             stream >> tempWord;
             stream >> newEdge2;
-
+            stream >> tempWord;
+            if (tempWord == "-")
+                weight = tempWord;
+            stream >> tempWord;
+            weight += tempWord;
+            
             // Add the edge between the vertices
             graphs[currGraphIndex].addEdge(newEdge1, newEdge2);
 
