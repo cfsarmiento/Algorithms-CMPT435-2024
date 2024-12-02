@@ -45,7 +45,7 @@ int main() {
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
-    std::string weight = " ";
+    std::string weight = "";
     int bstComparisons = 0;
     double avgBSTComparisons = 0.0;
     int componentCount = 0;
@@ -92,19 +92,16 @@ int main() {
             
             // Parse out the vertexIDs to add the edges
             std::istringstream stream(content);
-            stream >> tempWord;
-            stream >> tempWord;
-            stream >> newEdge1;
-            stream >> tempWord;
-            stream >> newEdge2;
-            stream >> tempWord;
-            if (tempWord == "-")
-                weight = tempWord;
-            stream >> tempWord;
-            weight += tempWord;
+            stream >> tempWord;  // "add"
+            stream >> tempWord;  // "edge"
+            stream >> newEdge1;  // "{edge ID 1}"
+            stream >> tempWord;  // "-"
+            stream >> newEdge2;  // "{edge ID 2}"
+            stream >> weight;    // "{weight}"
+        
             
             // Add the edge between the vertices
-            graphs[currGraphIndex].addEdge(newEdge1, newEdge2);
+            graphs[currGraphIndex].addEdge(newEdge1, newEdge2);  // TODO: add weight
 
         } // else if
 

@@ -2,10 +2,10 @@
  * Vertex Class
  * Author: Christian Sarmiento
  * Purpose: Class definition for a vertex data structure
- * Date Created: 11/10/24
- * Last Updated: 11/14/24
+ * Date Created: 11/30/24
+ * Last Updated: 12/2/24
  * -----------------------------------------------------------------------------------------------------------------------
- * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
@@ -105,6 +105,8 @@ void Vertex::setID(std::string newID) {
 */
 void Vertex::addNeighbor(Vertex* newVertex) {
 
+    // TODO: need to be able to save the weight; you can do this with a tuple or any kind of object that can 
+    // save the vertex neighbor (where you are going) and the weight (cost to get there) together
     myNeighbors.push_back(newVertex);
 
 } // addNeighbor()
