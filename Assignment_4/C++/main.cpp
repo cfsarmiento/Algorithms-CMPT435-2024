@@ -25,7 +25,44 @@
 #include <string>
 #include <vector>  // C++ dynamic list
 
+/* Helper Functions */
 
+void initSingleSource(Graph graphObject, Vertex* initVertex) {
+
+    // Variables 
+    std::vector<Vertex*> graphVertices = graphObject.myVertices;
+    int INIT_VERTEX_DISTANCE = 69696969;  // nice
+
+    // Iterate through each vertex in the graph
+    for (int i=0; i < graphVertices.size(); i++) {
+
+        // Instansiate estimated distances and predecessor vertices
+        graphVertices[i]->minDistance = INIT_VERTEX_DISTANCE;
+        graphVertices[i]->predecessor = nullptr;
+
+    } // for i
+
+    // Set the minimum distance for the initial vertex
+    initVertex->minDistance = 0;
+
+} // initSingleSource()
+
+bool bellmanFordSSSP(Graph graph, Vertex* startVertex) {
+
+    // Variables
+    std::vector<Vertex*> graphVertices = graph.myVertices;
+
+    // Initialize starting distances and predecessor vertex
+    initSingleSource(graph, startVertex);
+
+    // Iterate through the vertices
+    for (int i=1; i < graph.myVertices.size(); i++) {
+
+        // Iterate through the edges
+        for (int j=0; j < graph)
+    } // for i
+
+} // bellmanFordSSSP()
 /* Main Function */
 
 /**
@@ -99,7 +136,6 @@ int main() {
             stream >> newEdge2;  // "{edge ID 2}"
             stream >> weight;    // "{weight}"
         
-            
             // Add the edge between the vertices
             graphs[currGraphIndex].addEdge(newEdge1, newEdge2, weight);  
 

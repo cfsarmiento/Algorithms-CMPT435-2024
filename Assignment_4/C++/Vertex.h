@@ -23,7 +23,9 @@ class Vertex {
         // Instance Variables
         std::string myID = " ";
         bool proccessed = false;
-        std::vector<std::tuple<Vertex*, int>> myNeighbors;  
+        std::vector<std::tuple<Vertex*, int>> myNeighbors;
+        int minDistance = 0;
+        Vertex* predecessor; 
 
         // Null & Full Constructors
         Vertex();
