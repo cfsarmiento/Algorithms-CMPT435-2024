@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
  * Date Created: 11/30/24
- * Last Updated: 12/2/24
+ * Last Updated: 12/3/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -12,6 +12,7 @@
 #include "Graph.h" 
 #include <iostream>
 #include "Queue.h"
+#include <tuple>
 
 /* Method Implementations */
 
@@ -93,45 +94,32 @@ void Graph::addVertex(Vertex* newVertex) {
 
 /**
  * Setter method that adds an edge between two verticies. Takes in two strings representing IDs belonging to the 1st 
- * and 2nd verticies to be added, respectively.
+ * and 2nd verticies to be added, respectively as well as a weight. The second parameter (vertex2ID) will always
+ * be what the first parameter (vertex1ID) is pointing to for the direction of the edge.
 */
-void Graph::addEdge(std::string vertex1ID, std::string vertex2ID) {
+void Graph::addEdge(std::string vertex1ID, std::string vertex2ID, int weightVal) {
 
     // Variables
     Vertex* vertex1;
     Vertex* vertex2;
-    int start = -1;
-    int end = -1;
 
     // Get both of the verticies
     vertex1 = getVertex(vertex1ID);
     vertex2 = getVertex(vertex2ID);
 
-    // Add an edge between them if both vertices exist
+    // Add an edge between them if both vertices exist - directed edge 
     if (vertex1 && vertex2) {
 
-        vertex1->addNeighbor(vertex2); // TODO: add support for weights
-        vertex2->addNeighbor(vertex1);
+        // Create a tuple with the neighbor vertex and weight
+        std::tuple<Vertex*, int> weightedEdge(vertex2, weightVal);
+
+        // Add edge 
+        vertex1->addNeighbor(weightedEdge); 
 
     } // if
 
     else
         std::cout << "Could not add an edge between " << vertex1ID << " and " << vertex2ID << "." << std::endl;
-
-    // Find the index at where the vertices exist in the adjacency matrix
-    for (int i = 1; i <= numVertices; i++) {
-
-        if (myGraphMatrix[i][0] == vertex1ID)
-            start = i;
-        
-        if (myGraphMatrix[0][i] == vertex2ID)
-            end = i;
-
-    } // for i
-
-    // Add edge to the adjacency matrix
-    myGraphMatrix[start][end] = "1";
-    myGraphMatrix[end][start] = "1";
 
 } // addEdge()
 
@@ -176,33 +164,11 @@ void Graph::adjacencyList() const {
 
 } // adjacencyList()
 
-/**
- * Class method that prints out the adjacency matrix for the graph. 
-*/
-void Graph::adjacencyMatrix() const {
 
-    // Iterate through each row
-    std::cout << "Adjacency Matrix:" << std::endl;
-    for (const auto& row : myGraphMatrix) {
+/*
 
-        // Iterate through each cell and print out the value
-        for (const auto& cell : row) {
+ Class method that does a depth first traversal of the graph recursively.
 
-            std::cout << (cell.empty() ? "0" : cell) << " ";
-
-        } // for cell
-
-        std::cout << std::endl;
-
-    } // for row
-
-    std::cout << std::endl;
-
-} // adjacencyMatrix()
-
-/**
- * Class method that does a depth first traversal of the graph recursively.
-*/
 void Graph::depthFirstTraversal(Vertex* currVertex) {
 
     // Check that the vertex is valid
@@ -233,9 +199,9 @@ void Graph::depthFirstTraversal(Vertex* currVertex) {
     
 } // depthFirstTraversal
 
-/**
- * Class method that does a breadth first traversal of the graph.
-*/
+
+Class method that does a breadth first traversal of the graph.
+
 void Graph::breadthFirstTraversal(Vertex* initVertex) {
 
     // Variables
@@ -275,4 +241,5 @@ void Graph::breadthFirstTraversal(Vertex* initVertex) {
     else
         std::cout << "That vertex does not exist." << std::endl;
 
-} // depthFirstTraversal
+} // breadthFirstTraversal
+*/

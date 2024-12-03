@@ -3,13 +3,13 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a vertex data structure
  * Date Created: 11/30/24
- * Last Updated: 12/2/24
+ * Last Updated: 12/3/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 // Dependencies
-#include "Vertex.h" 
+#include "Vertex.h"
 
 /* Method Implementations */
 
@@ -58,7 +58,7 @@ bool Vertex::isProccessed() {
  * Getter method that returns the neighbors for the current vertex. A neighbor is another vertex that shares an edge
  * with the current vertex. Returns a vector of vertex class pointers. 
 */
-std::vector<Vertex*> Vertex::getNeighbors() {
+std::vector<std::tuple<Vertex*, int>> Vertex::getNeighbors() {
 
     return myNeighbors;
 
@@ -70,7 +70,7 @@ std::vector<Vertex*> Vertex::getNeighbors() {
 std::string Vertex::getNeighborIDs() {
 
     // Variables
-    std::vector<Vertex*> currNeighbors = getNeighbors();
+    std::vector<std::tuple<Vertex*, int>> currNeighbors = getNeighbors();
     std::string neighborIDs = "";
 
     // Iterate through the current neighbors
@@ -78,10 +78,10 @@ std::string Vertex::getNeighborIDs() {
 
         // Save the output of the IDs nicely 
         if(i < currNeighbors.size() - 1)
-            neighborIDs += currNeighbors[i]->getID() + ", ";
+            neighborIDs += std::get<0>(currNeighbors[i])->getID() + ", ";
 
         else
-            neighborIDs += currNeighbors[i]->getID();
+            neighborIDs += std::get<0>(currNeighbors[i])->getID();
 
     } // for
 
@@ -101,12 +101,11 @@ void Vertex::setID(std::string newID) {
 } // setID()
 
 /**
- * Setter method to add a neighbor to the current vertex. Takes in a vertex pointer and returns nothing. 
+ * Setter method to add a neighbor to the current vertex. Takes in a tuple that holds a vertex pointer and the 
+ * weight of the edge to get there
 */
-void Vertex::addNeighbor(Vertex* newVertex) {
+void Vertex::addNeighbor(std::tuple<Vertex*, int> neighborWeightedEdge) {
 
-    // TODO: need to be able to save the weight; you can do this with a tuple or any kind of object that can 
-    // save the vertex neighbor (where you are going) and the weight (cost to get there) together
-    myNeighbors.push_back(newVertex);
+    myNeighbors.push_back(neighborWeightedEdge);
 
 } // addNeighbor()

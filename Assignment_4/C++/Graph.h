@@ -2,10 +2,10 @@
  * Graph Header File
  * Author: Christian Sarmiento
  * Purpose: Header file for Graph class. Allows it to be used in other files. 
- * Date Created: 11/10/24
- * Last Updated: 11/15/24
+ * Date Created: 11/30/24
+ * Last Updated: 12/3/24
  * -----------------------------------------------------------------------------------------------------------------------
- * Assignment 3             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
+ * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
 
 #ifndef GRAPH_H
@@ -35,7 +35,7 @@ class Graph {
 
         // Setters
         void addVertex(Vertex* newVertex);
-        void addEdge(std::string vertex1ID, std::string vertex2ID);
+        void addEdge(std::string vertex1ID, std::string vertex2ID, int weightVal);
 
         // Class Methods
         void resetProcessedFlag();

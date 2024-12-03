@@ -45,7 +45,7 @@ int main() {
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
-    std::string weight = "";
+    int weight = 0;
     int bstComparisons = 0;
     double avgBSTComparisons = 0.0;
     int componentCount = 0;
@@ -101,7 +101,7 @@ int main() {
         
             
             // Add the edge between the vertices
-            graphs[currGraphIndex].addEdge(newEdge1, newEdge2);  // TODO: add weight
+            graphs[currGraphIndex].addEdge(newEdge1, newEdge2, weight);  
 
         } // else if
 

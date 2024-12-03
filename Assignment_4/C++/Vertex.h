@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Header file for Vertex class. Allows it to be used in other files. 
  * Date Created: 11/30/24
- * Last Updated: 11/30/24
+ * Last Updated: 12/3/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -14,6 +14,7 @@
 // Dependencies 
 #include <string>
 #include <vector>
+#include <tuple>
 
 class Vertex {
 
@@ -22,7 +23,7 @@ class Vertex {
         // Instance Variables
         std::string myID = " ";
         bool proccessed = false;
-        std::vector<Vertex*> myNeighbors;  
+        std::vector<std::tuple<Vertex*, int>> myNeighbors;  
 
         // Null & Full Constructors
         Vertex();
@@ -31,12 +32,12 @@ class Vertex {
         // Getters
         std::string getID();
         bool isProccessed();
-        std::vector<Vertex*> getNeighbors();
+        std::vector<std::tuple<Vertex*, int>> getNeighbors();
         std::string getNeighborIDs();
 
         // Setters
         void setID(std::string newID);
-        void addNeighbor(Vertex* newVertex);
+        void addNeighbor(std::tuple<Vertex*, int> neighborWeightedEdge);
 
 }; // Class Vertex
 
