@@ -6,7 +6,7 @@
  * fractional knapsack problem with out directed graph. 
  * Date Created: 11/30/24
  * Last Updated: 12/4/24
- * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp Queue.cpp Vertex.cpp Spice.cpp
+ * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp Graph.cpp Vertex.cpp Spice.cpp
  * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
@@ -24,6 +24,7 @@
 // Types
 #include <string>
 #include <vector>  // C++ dynamic list
+#include <map>
 
 /* Helper Functions */
 
@@ -174,6 +175,121 @@ std::vector<std::string> split(const std::string& text, char delimiter) {
     return result;
 
 } // split()
+
+/**
+ * Helper method to swap string elements in an array. 
+*/
+void swap(Spice& item1, Spice& item2) {
+
+    // Variables
+    Spice temp;
+
+    // Swap
+    temp = item1;
+    item1 = item2;
+    item2 = temp;
+
+} // swap
+
+/**
+ * Helper method for Quick Sort to choose a pivot point. Takes in an array as well as starting, middle, 
+ * and end indexes. Returns the pivot index.
+*/
+int choosePivot(std::vector<Spice>& array, int left, int mid, int right) {
+
+    // Variables
+    int pivotPostion = 0;
+
+    // Find middle value out of left, mid, and right indexes
+    if ((array[left].getUnitPrice() <= array[mid].getUnitPrice() && array[mid].getUnitPrice() <= array[right].getUnitPrice()) || 
+        (array[right].getUnitPrice() <= array[mid].getUnitPrice() && array[mid].getUnitPrice() <= array[left].getUnitPrice()))
+        pivotPostion = mid;
+
+    else if ((array[mid].getUnitPrice() <= array[left].getUnitPrice() && array[left].getUnitPrice() <= array[right].getUnitPrice()) || 
+             (array[right].getUnitPrice() <= array[left].getUnitPrice() && array[left].getUnitPrice() <= array[mid].getUnitPrice()))
+        pivotPostion = left;
+
+    else
+        pivotPostion = right;
+
+    return pivotPostion;
+
+} // choosePivot()
+
+/**
+ * Helper method for Quick Sort. Partitions the list to be sorted. Takes in an array, starting, 
+ * end, and pivot indexes. Returns an array of output containing the number of comparisons as well
+ * as an index for future sorting iterations. 
+*/
+std::vector<int> partition(std::vector<Spice>& array, int startPos, int endPos, int pivotPoint) {
+
+    // Variables
+    int l = startPos - 1;
+    int numComparisons = 0;
+    std::vector<int> output(2);
+
+    // Swap elements at the partition
+    swap(array[pivotPoint], array[endPos]);
+
+    // Sort through partitions
+    for (int i = startPos; i <= endPos - 1; i++) {
+
+        numComparisons++;
+        if (array[i].getUnitPrice() > array[endPos].getUnitPrice()) {
+            
+            l++;
+            swap(array[l], array[i]);
+
+        } // if
+
+    } // for i
+
+    // Final swap
+    swap(array[l+1], array[endPos]);
+
+    // Output
+    output[0] = l + 1;  // partition point
+    output[1] = numComparisons;
+
+    return output;
+
+} // partition()
+
+/**
+ * Method that implements quick sort on an array of strings. Takes in an array, and the starting and end indexes.
+ * Returns the number of comparisons.
+*/
+int quickSort(std::vector<Spice>& items, int leftPos, int rightPos) {
+
+    //Variables
+    int totalComparisons = 0;
+    int pivot = 0;
+    int midpoint = 0;
+    int partitionPoint = 0;
+    std::vector<int> response(2);
+
+    // Base case
+    if (leftPos < rightPos) {
+
+        // Choose pivot
+        midpoint = leftPos + (rightPos - leftPos) / 2;
+        pivot = choosePivot(items, leftPos, midpoint, rightPos);
+
+        // Partition the array
+        response = partition(items, leftPos, rightPos, pivot);
+        partitionPoint = response[0];
+        totalComparisons += response[1];
+
+        // Recursive sort
+        totalComparisons += quickSort(items, leftPos, partitionPoint - 1);
+        totalComparisons += quickSort(items, partitionPoint + 1, rightPos);
+
+    } // if
+
+    return totalComparisons;
+
+} // quickSort()
+
 /* Main Function */
 
 /**
@@ -198,6 +314,9 @@ int main() {
     std::vector<Spice> spices;
     double spicePrice = 0.0;
     int spiceQuantity = 0;
+    std::vector<int> knapsacks;
+    int knapsackSize = 0;
+    int currKnapsackSize = 0;
 
     /**
      * SSSP
@@ -346,11 +465,112 @@ int main() {
 
         } // if
 
+        // Get the available knapsacks
+        else if (entry.find("knapsack capacity") != std::string::npos) {
+
+            // Parse out the knapsack sizes
+            std::istringstream stream(entry);
+            stream >> tempWord;  // "knapsack"
+            stream >> tempWord;  // "capacity"
+            stream >> tempWord;  // "="
+            stream >> knapsackSize;  // {knapsack_size}
+
+            // Add to our knapsacks
+            knapsacks.push_back(knapsackSize);
+
+        } // else if
+
     } // while
 
-    for (int t=0; t < spices.size(); t++)
-        std::cout << spices[t].getSpiceName() << ", " << spices[t].getTotalPrice() << ", " << spices[t].getQuantity() << std::endl;
-    
+    // Compute the unit price for each spice and save it to a vector
+    for (int k=0; k < spices.size(); k++) {
+
+        spices[k].computeUnitPrice();
+
+    } // for k 
+
+    // Sort the unit prices
+    quickSort(spices, 0, spices.size() - 1);
+
+    // Iterate through the knapsack sizes
+    for (int l=0; l < knapsacks.size(); l++) {
+
+        // Variables
+        currKnapsackSize = knapsacks[l];
+        int currSpiceQty = 0;
+        double currUnitPrice = 0.0;
+        double totalKnapsackCost = 0.0;
+        std::string finalOutput = "";
+        std::string scoopOutput = "";
+        int numScoops = 0;
+        std::map<std::string, int> spiceScoops;
+        int validSpices = 0;
+        int numCurrSpices = 0;
+        std::ostringstream roundedKnapsackCost;
+
+        // Start building string
+        finalOutput += "Knapsack of capacity " + std::to_string(currKnapsackSize) + " is worth ";
+
+        // Make sure there is still space in the knapsack
+        while (currKnapsackSize > 0) {
+
+            // Iterate through the sorted spices
+            for (int m=0; m < spices.size(); m++) {
+
+                // Initalize our constrains/counts
+                currSpiceQty = spices[m].getQuantity();
+                currUnitPrice = spices[m].getUnitPrice();
+                spiceScoops[spices[m].getSpiceName()] = 0;
+
+                // Make sure there is still spice to grab
+                while (currSpiceQty > 0 && currKnapsackSize > 0) {
+
+                    // Add a scoop
+                    totalKnapsackCost += currUnitPrice;
+                    currSpiceQty--;
+                    currKnapsackSize--;
+                    spiceScoops[spices[m].getSpiceName()]++;
+
+                } // while
+
+            } // for m
+
+        } // while
+
+        // Count the number of valid elements for output purposes
+        for (const auto& n : spiceScoops)
+            if (n.second != 0) 
+                validSpices++;
+        
+        // Iterate through our scoops to build our output
+        for (auto n = spiceScoops.begin(); n != spiceScoops.end(); ++n) {
+
+            // Ensure it is worthwhile to display
+            if (n->second != 0) {
+
+                numCurrSpices++;
+                scoopOutput +=  std::to_string(n->second) + " scoops of " + n->first;
+
+                // Add comma delimiter if it isn't the last element
+                if (numCurrSpices < validSpices)  
+                    scoopOutput += ", ";
+
+            } // if
+
+        } // for n
+
+        // Add total number of quatloos obtained for the knapsack
+        roundedKnapsackCost << std::fixed << std::setprecision(1) << totalKnapsackCost;
+        finalOutput += roundedKnapsackCost.str() + " quatloos and contains ";
+
+        // Add total number of scoops
+        finalOutput += scoopOutput + ".";
+        
+        // Final output
+        std::cout << finalOutput << std::endl;
+
+    } // for l
+
     // Close magicitems.txt
     spiceFile.close();
 
