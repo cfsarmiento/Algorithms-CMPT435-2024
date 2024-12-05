@@ -108,6 +108,7 @@ void outputShortestPath(Vertex* initVertex, std::vector<Vertex*> vertices) {
 
 } // outputShortestPath
 
+// TODO: not outputting correctly, always converges to "negative weight cycle"
 void bellmanFordSSSP(Graph graph, Vertex* startVertex) {
 
     // Variables
