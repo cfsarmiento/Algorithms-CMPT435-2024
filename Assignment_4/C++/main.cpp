@@ -5,7 +5,7 @@
  * path algorithm on the graph. We also conduct a spice heist given a text file where we must solve a variation of a 
  * fractional knapsack problem with out directed graph. 
  * Date Created: 11/30/24
- * Last Updated: 12/4/24
+ * Last Updated: 12/5/24
  * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp Graph.cpp Vertex.cpp Spice.cpp
  * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,6 +28,9 @@
 
 /* Helper Functions */
 
+/**
+ * Helper method for bellmanFordSSSP() to help initalize the proper attributes to begin SSSP.
+ */
 void initSingleSource(Graph graphObject, Vertex* initVertex) {
 
     // Variables 
@@ -48,6 +51,10 @@ void initSingleSource(Graph graphObject, Vertex* initVertex) {
 
 } // initSingleSource()
 
+/**
+ * Helper function for bellmanFordSSSP() that helps find the minimum distance between two vertices. Takes in
+ * two vertex objects for the start and end vertices and the weight for the edge between them. 
+ */
 void relax(Vertex*& startVertex, Vertex*& endVertex, int edgeWeight) {
 
     // Relax the path cost if the cost of getting to edge is greater than the current path
@@ -60,6 +67,11 @@ void relax(Vertex*& startVertex, Vertex*& endVertex, int edgeWeight) {
 
 } // relax()
 
+/**
+ * Helper function that uses recursion to find the path from an end vertex back to the inital vertex using
+ * the predecessor edges. Takes in a vertex object as the end vertex and passes a vector of strings by 
+ * reference in order to save the output appropriately.
+ */
 void getPath(Vertex* vertex, std::vector<std::string>& pathVector) {
 
     // Base case - null pointer for predecessor
@@ -71,6 +83,11 @@ void getPath(Vertex* vertex, std::vector<std::string>& pathVector) {
 
 } // getPath()
 
+/**
+ * Helper method that helps display the shortest path to each vertex in a graph from an inital vertex. Helper
+ * method for the bellmanFordSSSP() function that takes in a vertex object for the intial vertex and a vector
+ * of vertices. 
+ */
 void outputShortestPath(Vertex* initVertex, std::vector<Vertex*> vertices) {
 
     // Variables
@@ -115,7 +132,10 @@ void outputShortestPath(Vertex* initVertex, std::vector<Vertex*> vertices) {
 
 } // outputShortestPath
 
-
+/**
+ * Helper methon that conducts Bellman-Ford Single Source Shortest Path (SSSP). Takes in a graph object as well
+ * as a start vertex object to find the shortest path to all the other vertices from the start vertex. 
+ */
 void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
 
     // Variables
@@ -158,6 +178,10 @@ void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
 
 } // bellmanFordSSSP()
 
+/**
+ * Helper method for parsing. This helps split a string on a given delimiter. Takes in a string of text and 
+ * a character for the delimiter. 
+ */
 std::vector<std::string> split(const std::string& text, char delimiter) {
 
     // Variables
@@ -290,6 +314,99 @@ int quickSort(std::vector<Spice>& items, int leftPos, int rightPos) {
 
 } // quickSort()
 
+/**
+ * Helper method that runs a greedy algorithm to fill various knapsacks (bags) with spices. Takes in 
+ * a vector of integers representing the respective sizes of the bags as well as a vector of Spice objects.
+ */
+void greedySpiceCollection(std::vector<int> bags, std::vector<Spice> spiceObjects) {
+
+    // Variables
+    int currKnapsackSize = 0;
+    int currSpiceQty = 0;
+    double currUnitPrice = 0.0;
+    double totalKnapsackCost = 0.0;
+    std::string finalOutput = "";
+    std::string scoopOutput = "";
+    int validSpices = 0;
+    int numCurrSpices = 0;
+
+    // Iterate through the knapsack sizes
+    for (int l=0; l < bags.size(); l++) {
+
+        // Loop variables
+        currKnapsackSize = bags[l];
+        totalKnapsackCost = 0.0;
+        finalOutput = "";
+        scoopOutput = "";
+        std::map<std::string, int> spiceScoops;
+        std::ostringstream roundedKnapsackCost;
+
+        // Start building string
+        finalOutput += "Knapsack of capacity " + std::to_string(currKnapsackSize) + " is worth ";
+
+        // Make sure there is still space in the knapsack
+        while (currKnapsackSize > 0) {
+
+            // Iterate through the sorted spices
+            for (int m=0; m < spiceObjects.size(); m++) {
+
+                // Initalize our constrains/counts
+                currSpiceQty = spiceObjects[m].getQuantity();
+                currUnitPrice = spiceObjects[m].getUnitPrice();
+                spiceScoops[spiceObjects[m].getSpiceName()] = 0;
+
+                // Make sure there is still spice to grab
+                while (currSpiceQty > 0 && currKnapsackSize > 0) {
+
+                    // Add a scoop
+                    totalKnapsackCost += currUnitPrice;
+                    currSpiceQty--;
+                    currKnapsackSize--;
+                    spiceScoops[spiceObjects[m].getSpiceName()]++;
+
+                } // while
+
+            } // for m
+
+        } // while
+
+        // Count the number of valid elements for output purposes
+        // (a valid element is an element that has more than 0 scoops)
+        for (const auto& n : spiceScoops)
+            if (n.second > 0) 
+                validSpices++;
+        
+        // Iterate through our scoops to build our output
+        for (auto n = spiceScoops.begin(); n != spiceScoops.end(); ++n) {
+
+            // Ensure it is worthwhile to display
+            if (n->second != 0) {
+
+                numCurrSpices++;
+                scoopOutput +=  std::to_string(n->second) + " scoops of " + n->first;
+
+                // Add comma delimiter if it isn't the last element
+                if (numCurrSpices < validSpices)  
+                    scoopOutput += ", ";
+
+            } // if
+
+        } // for n
+
+        // Add total number of quatloos obtained for the knapsack
+        roundedKnapsackCost << std::fixed << std::setprecision(1) << totalKnapsackCost;
+        finalOutput += roundedKnapsackCost.str() + " quatloos and contains ";
+
+        // Add total number of scoops
+        finalOutput += scoopOutput + ".";
+        
+        // Final output
+        std::cout << finalOutput << std::endl;
+
+    } // for l
+
+} // greedySpiceCollection()
+
 /* Main Function */
 
 /**
@@ -298,25 +415,24 @@ int quickSort(std::vector<Spice>& items, int leftPos, int rightPos) {
 int main() {
     
     // Variables
-    std::vector<Graph> graphs;
     std::string entry = "";
     std::string searchItem = "";
     std::string content = "";
-    int currGraphIndex = -1;
     std::string newVertexID = " ";
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
     std::string spiceName = " ";
+    int currGraphIndex = -1;
     int weight = 0;
     int currSpiceIndex = -1;
+    int spiceQuantity = 0;
+    int knapsackSize = 0;
+    double spicePrice = 0.0;
+    std::vector<Graph> graphs;
     std::vector<std::string> spiceAttributes;
     std::vector<Spice> spices;
-    double spicePrice = 0.0;
-    int spiceQuantity = 0;
     std::vector<int> knapsacks;
-    int knapsackSize = 0;
-    int currKnapsackSize = 0;
 
     /**
      * SSSP
@@ -492,87 +608,10 @@ int main() {
     // Sort the unit prices
     quickSort(spices, 0, spices.size() - 1);
 
-    // Iterate through the knapsack sizes
-    for (int l=0; l < knapsacks.size(); l++) {
-
-        // Variables
-        currKnapsackSize = knapsacks[l];
-        int currSpiceQty = 0;
-        double currUnitPrice = 0.0;
-        double totalKnapsackCost = 0.0;
-        std::string finalOutput = "";
-        std::string scoopOutput = "";
-        int numScoops = 0;
-        std::map<std::string, int> spiceScoops;
-        int validSpices = 0;
-        int numCurrSpices = 0;
-        std::ostringstream roundedKnapsackCost;
-
-        // Start building string
-        finalOutput += "Knapsack of capacity " + std::to_string(currKnapsackSize) + " is worth ";
-
-        // Make sure there is still space in the knapsack
-        while (currKnapsackSize > 0) {
-
-            // Iterate through the sorted spices
-            for (int m=0; m < spices.size(); m++) {
-
-                // Initalize our constrains/counts
-                currSpiceQty = spices[m].getQuantity();
-                currUnitPrice = spices[m].getUnitPrice();
-                spiceScoops[spices[m].getSpiceName()] = 0;
-
-                // Make sure there is still spice to grab
-                while (currSpiceQty > 0 && currKnapsackSize > 0) {
-
-                    // Add a scoop
-                    totalKnapsackCost += currUnitPrice;
-                    currSpiceQty--;
-                    currKnapsackSize--;
-                    spiceScoops[spices[m].getSpiceName()]++;
-
-                } // while
-
-            } // for m
-
-        } // while
-
-        // Count the number of valid elements for output purposes
-        for (const auto& n : spiceScoops)
-            if (n.second != 0) 
-                validSpices++;
-        
-        // Iterate through our scoops to build our output
-        for (auto n = spiceScoops.begin(); n != spiceScoops.end(); ++n) {
-
-            // Ensure it is worthwhile to display
-            if (n->second != 0) {
-
-                numCurrSpices++;
-                scoopOutput +=  std::to_string(n->second) + " scoops of " + n->first;
-
-                // Add comma delimiter if it isn't the last element
-                if (numCurrSpices < validSpices)  
-                    scoopOutput += ", ";
-
-            } // if
-
-        } // for n
-
-        // Add total number of quatloos obtained for the knapsack
-        roundedKnapsackCost << std::fixed << std::setprecision(1) << totalKnapsackCost;
-        finalOutput += roundedKnapsackCost.str() + " quatloos and contains ";
-
-        // Add total number of scoops
-        finalOutput += scoopOutput + ".";
-        
-        // Final output
-        std::cout << finalOutput << std::endl;
-
-    } // for l
+    // Perform the greedy algorithm for filling our knapsacks
+    greedySpiceCollection(knapsacks, spices);
 
     // Close magicitems.txt
     spiceFile.close();
-
 
 }; // main()
