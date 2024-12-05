@@ -3,7 +3,7 @@
  * Author: Christian Sarmiento
  * Purpose: Class definition for a linked list data structure, used to store string values of palindromes.
  * Date Created: 11/30/24
- * Last Updated: 12/3/24
+ * Last Updated: 12/4/24
  * -----------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
 */
@@ -115,6 +115,10 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID, int weightVal)
 
         // Add edge 
         vertex1->addNeighbor(weightedEdge); 
+
+        // Create a tuple for edges and weights
+        std::tuple<Vertex*, Vertex*, int> edgeWeightPairs(vertex1, vertex2, weightVal);
+        myEdges.push_back(edgeWeightPairs);
 
     } // if
 

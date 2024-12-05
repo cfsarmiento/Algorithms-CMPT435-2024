@@ -23,6 +23,7 @@ class Graph {
         std::vector<Vertex*> myVertices;
         std::string myGraphName;
         std::vector<std::vector<std::string>> myGraphMatrix;
+        std::vector<std::tuple<Vertex*, Vertex*, int>> myEdges;
         int numVertices;
 
         // Constructors

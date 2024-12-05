@@ -5,8 +5,8 @@
  * path algorithm on the graph. We also conduct a spice heist given a text file where we must solve a variation of a 
  * fractional knapsack problem with out directed graph. 
  * Date Created: 11/30/24
- * Last Updated: 11/30/24
- * Compilation: g++ -std=c++20 -o GraphsAndBSTs main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp BinarySearchTree.cpp
+ * Last Updated: 12/4/24
+ * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp BinarySearchTree.cpp
  * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
@@ -47,22 +47,108 @@ void initSingleSource(Graph graphObject, Vertex* initVertex) {
 
 } // initSingleSource()
 
-bool bellmanFordSSSP(Graph graph, Vertex* startVertex) {
+void relax(Vertex* startVertex, Vertex* endVertex, int edgeWeight) {
+
+    // Relax the path cost if the cost of getting to edge is greater than the current path
+    if (endVertex->minDistance > startVertex->minDistance + edgeWeight) {
+
+        endVertex->minDistance = startVertex->minDistance + edgeWeight;
+        endVertex->predecessor = startVertex;
+
+    } // if
+
+} // relax()
+
+void getPath(Vertex* vertex, std::vector<std::string>& pathVector) {
+
+    // Base case - null pointer for predecessor
+    if (vertex->predecessor != nullptr)
+        getPath(vertex->predecessor, pathVector);
+    
+    // Add the vertex ID to the path vector - in order with recursion
+    pathVector.push_back(vertex->getID());
+
+} // getPath()
+
+void outputShortestPath(Vertex* initVertex, std::vector<Vertex*> vertices) {
+
+    // Variables
+    std::string outputString = "";
+    std::vector<std::string> idVector; 
+
+    // Iterate through the vertices, not including the initial vertex
+    for (int i=1; i < vertices.size(); i++) {
+
+        // Build first part  of the string
+        outputString += initVertex->getID();
+        outputString += " --> ";
+        outputString += vertices[i]->getID();
+        outputString += " cost is ";
+        outputString += std::to_string(vertices[i]->minDistance);
+        outputString += "; path: ";
+
+        // Call recursive function to get the path 
+        getPath(vertices[i], idVector);
+
+        // With populated vector, add ids to the output string
+        for (int j=0; j < idVector.size(); j++) {
+
+            if (j != idVector.size() - 1)
+                outputString += idVector[j] + " --> ";
+            
+            else
+                outputString += idVector[j];
+
+        } // for j
+
+        // Add newline character to not crowd the output
+        outputString += "\n";
+
+    } // for i
+
+} // outputShortestPath
+
+void bellmanFordSSSP(Graph graph, Vertex* startVertex) {
 
     // Variables
     std::vector<Vertex*> graphVertices = graph.myVertices;
+    std::vector<std::tuple<Vertex*, Vertex*, int>> graphEdges = graph.myEdges;
+    bool success = true;
 
     // Initialize starting distances and predecessor vertex
     initSingleSource(graph, startVertex);
 
     // Iterate through the vertices
-    for (int i=1; i < graph.myVertices.size(); i++) {
+    for (int i=1; i < (graphVertices.size() - 1); i++) {
 
         // Iterate through the edges
-        for (int j=0; j < graph)
+        for (int j=0; j < graphEdges.size(); j++) {
+
+            relax(std::get<0>(graphEdges[i]), std::get<1>(graphEdges[i]), std::get<2>(graphEdges[i]));
+    
+        } // for j
+
     } // for i
 
+    // Checking for negative weight cycle
+    for (int k=0; k < graphEdges.size(); k++) {
+
+        if (std::get<1>(graphEdges[k])->minDistance > (std::get<0>(graphEdges[k])->minDistance + std::get<2>(graphEdges[k])))
+            success = false;
+
+    } // for k
+
+
+    // Print results
+    if (success) 
+        outputShortestPath(startVertex, graphVertices);
+    
+    else
+        std::cout << "Negative weight cycle." << std::endl;
+  
+
 } // bellmanFordSSSP()
+
 /* Main Function */
 
 /**
@@ -146,58 +232,15 @@ int main() {
     // Close graphs1.txt
     graphFile.close();
 
-    // Iterate through the graphs and make the required output (matrix, adj. list, traversals)
+    // Iterate through the graphs and conduct Bellman-Ford SSSP
     for (int i=0; i < graphs.size(); i++) {
 
-        // Print the adjacency matrix
-        // TODO: remove extra column of zeros
-        graphs[i].adjacencyMatrix();
-
-        // Print the adjacency list
-        graphs[i].adjacencyList();
-
-        // Print the depth-first traversal
-        componentCount = 0;
-        std::cout << "Depth-First Traversal:" << std::endl;
-        for (int j=0; j < graphs[i].myVertices.size(); j++) {  // iterate to make sure disconnected graphs are traversed
-
-            // Check if the vertex is processed
-            if (!(graphs[i].myVertices[j]->isProccessed())) {
-                
-                componentCount++;
-                std::cout << "Component " << componentCount << ":" << std::endl;
-                graphs[i].depthFirstTraversal(graphs[i].myVertices[j]);
-                std::cout << std::endl;
-                std::cout << std::endl;
-
-            } // if
-
-        } // for j
-
-        // Print the breadth-first traversal
-        graphs[i].resetProcessedFlag();
-        componentCount = 0;
-        std::cout << "Breadth-First Traversal:" << std::endl;
-        for (int k=0; k < graphs[i].myVertices.size(); k++) {  
-
-            // Check if the vertex is processed
-            if (!(graphs[i].myVertices[k]->isProccessed())) {
-                
-                componentCount++;
-                std::cout << "Component " << componentCount << ":" << std::endl;
-                graphs[i].breadthFirstTraversal(graphs[i].myVertices[k]);
-                std::cout << std::endl;
-                std::cout << std::endl;
-
-            } // if
-
-        } // for k
+        bellmanFordSSSP(graphs[i], graphs[i].myVertices[0]);
 
     } // for i
 
     /**
      * Binary Search Tree
-    */
 
     // Open magicitems.txt file
     std::ifstream bstFile("magicitems.txt");
@@ -267,4 +310,6 @@ int main() {
 
     std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << (avgBSTComparisons / searchItems.size()) << std::endl;
     
+    */
+
 }; // main()
