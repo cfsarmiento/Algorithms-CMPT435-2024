@@ -6,7 +6,7 @@
  * fractional knapsack problem with out directed graph. 
  * Date Created: 11/30/24
  * Last Updated: 12/4/24
- * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp NodeBinaryTree.cpp Queue.cpp Vertex.cpp BinarySearchTree.cpp
+ * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp Queue.cpp Vertex.cpp
  * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
@@ -18,7 +18,6 @@
 #include <algorithm>
 #include <cctype>
 #include "Graph.h" 
-#include "BinarySearchTree.h"
 #include <sstream>
 
 // Types
@@ -157,6 +156,23 @@ void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
 
 } // bellmanFordSSSP()
 
+std::vector<std::string> split(const std::string& text, char delimiter) {
+
+    // Variables
+    std::vector<std::string> result;
+    std::stringstream ss(text);
+    std::string item;
+
+    // Split the string on the given delimiter
+    while (std::getline(ss, item, delimiter)) {
+
+        result.push_back(item);
+
+    } // while
+
+    return result;
+
+} // split()
 /* Main Function */
 
 /**
@@ -165,10 +181,8 @@ void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
 int main() {
     
     // Variables
-    std::vector<std::string> magicItems;
     std::vector<Graph> graphs;
-    std::vector<std::string> searchItems;
-    std::string item = "";
+    std::string entry = "";
     std::string searchItem = "";
     std::string content = "";
     int currGraphIndex = -1;
@@ -176,10 +190,10 @@ int main() {
     std::string newEdge1 = " ";
     std::string newEdge2 = " ";
     std::string tempWord = " ";  // variable to save arbitrary words while processing
+    std::string spiceName = " ";
     int weight = 0;
-    int bstComparisons = 0;
-    double avgBSTComparisons = 0.0;
     int componentCount = 0;
+    std::vector<std::string> spiceAttributes; 
 
     /**
      * SSSP
@@ -248,77 +262,55 @@ int main() {
 
     } // for i
 
-    /**
-     * Binary Search Tree
-
-    // Open magicitems.txt file
-    std::ifstream bstFile("magicitems.txt");
-
-    // Check if file open successfully
-    if (!bstFile.is_open()) {
-
-        std::cerr << "Failed to open file." << std::endl;
-        return 1;
-
-    } // if
-
-    // Read in magic items to vector array
-    while(std::getline(bstFile, item)) {
-
-        magicItems.push_back(item);
-
-    } // while
-
-    // Close magicitems.txt
-    bstFile.close();
-
-    // Define binary search tree
-    BinarySearchTree binaryTree;
-
-    // Load the items into a binary search tree
-    for (int l = 0; l < magicItems.size(); l++) {
-
-        std::cout << magicItems[l] << ": " << " ";
-        binaryTree.addData(magicItems[l]);
-        std::cout << std::endl;
-
-    } // for l
-
-    // Perform an in-order traversal
-    binaryTree.treeTraversal();
-
-    // Load items to look for
-    std::ifstream searchFile("magicitems-find-in-bst.txt");
-
-    // Check if file open successfully
-    if (!searchFile.is_open()) {
-
-        std::cerr << "Failed to open file." << std::endl;
-        return 1;
-
-    } // if
-
-    // Read in magic items to vector array
-    while(std::getline(searchFile, searchItem)) {
-
-        searchItems.push_back(searchItem);
-
-    } // while
-
-    // Close magicitems.txt
-    searchFile.close();
-
-    // Look for each of the items in the tree
-    for (int m=0; m < searchItems.size(); m++) {
-
-        bstComparisons = binaryTree.findItem(searchItems[m]);
-        avgBSTComparisons += bstComparisons;
-        std::cout << "Comparisons for " << searchItems[m] << ": " << bstComparisons << std::endl;
-
-    } // for m
-
-    std::cout << std::fixed << std::setprecision(2) << "Average Comparisons: " << (avgBSTComparisons / searchItems.size()) << std::endl;
-    
+   /**
+    * Spice Heist - Fractional Knapsack
     */
+
+    // Open spice.txt file
+    std::ifstream spiceFile("spice.txt");
+
+    // Check if file open successfully
+    if (!spiceFile.is_open()) {
+
+        std::cerr << "Failed to open file." << std::endl;
+        return 1;
+
+    } // if
+
+    // Parse file to create spice objects
+    while(std::getline(spiceFile, entry)) {
+
+        // Check if we are at a spice object entry
+        if (entry.find("spice") != std::string::npos) {
+
+            // Make a vector that splits the entry on semicolons
+            spiceAttributes = split(entry, ';');
+
+            // Iterate through substring to build our spice object
+            for (int j=0; j < spiceAttributes.size(); j++) {
+
+                // Get name
+                if (spiceAttributes[j].find("name =") != std::string::npos) {
+
+                    // Parse out the name
+                    std::istringstream stream(spiceAttributes[j]);
+                    stream >> tempWord;  // "spice"
+                    stream >> tempWord;  // "name"
+                    stream >> tempWord;  // "="
+                    stream >> spiceName;  // "{name}"
+                    
+                    std::cout << spiceName << std::endl;
+
+                } // if 
+
+            } // for j
+
+        } // if
+
+    } // while
+
+    // Close magicitems.txt
+    spiceFile.close();
+
 
 }; // main()
