@@ -11,7 +11,6 @@
 // Dependencies
 #include "Graph.h" 
 #include <iostream>
-#include "Queue.h"
 #include <tuple>
 
 /* Method Implementations */
@@ -127,123 +126,8 @@ void Graph::addEdge(std::string vertex1ID, std::string vertex2ID, int weightVal)
 
 } // addEdge()
 
-/* Class Methods */
-
-/**
- * Class method that resets all the processed flags for the vertices to false. To be called after doing a traversal.
-*/
-void Graph::resetProcessedFlag() {
-
-    // Iterate through the vertices in the graph and set processed to false
-    for (int i = 0; i < myVertices.size(); i++)
-        myVertices[i]->proccessed = false;
-
-} // resetProcessedFlag()
-
-/**
- * Class method that outputs an adjacency list for the graph
-*/
-void Graph::adjacencyList() const {
-
-    // Variables
-    std::string currID = " ";
-    std::string neighbors = " ";
-
-    // Iterate through each vertex in the graph to output the IDs of each vertex
-    std::cout << "Adjacency List" << std::endl;
-    for (int i = 0; i < myVertices.size(); i++) {
-
-        // Get the vertex ID
-        currID = myVertices[i]->getID();
-
-        // Get vertex neighbors
-        neighbors = myVertices[i]->getNeighborIDs();
-
-        // Print out the row for the adjacency list
-        std::cout << currID << ": " << neighbors << std::endl;
-
-    } // for i 
-
-    std::cout << std::endl;
-
-} // adjacencyList()
 
 
-/*
-
- Class method that does a depth first traversal of the graph recursively.
-
-void Graph::depthFirstTraversal(Vertex* currVertex) {
-
-    // Check that the vertex is valid
-    if (currVertex) {
-
-        // Check if the vertex is processed
-        if (!currVertex->isProccessed()) {
-
-            // Print out the ID and recognize that the vertex has been proccessed
-            std::cout << currVertex->getID() << " ";
-            currVertex->proccessed = true;
-
-        } // if
-
-        // Move on to the neighbors
-        for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
-
-            // If the current vertex isn't processed yet, recursively process it
-            if (!(currVertex->myNeighbors[i]->isProccessed()))
-                depthFirstTraversal(currVertex->myNeighbors[i]);
-
-        } // for 
-
-    } // if
-
-    else
-        std::cout << "That vertex does not exist." << std::endl;
-    
-} // depthFirstTraversal
 
 
-Class method that does a breadth first traversal of the graph.
 
-void Graph::breadthFirstTraversal(Vertex* initVertex) {
-
-    // Variables
-    Queue traversalQueue;
-    Vertex* currVertex;
-
-    if (initVertex) {
-
-        // Load vertex into the queue
-        traversalQueue.enqueue(initVertex);
-        initVertex->proccessed = true;
-
-        // Iterate through the rest of the vertices
-        while (!traversalQueue.isEmpty()) {
-
-            // Get the vertex in the queue to process the neighbors
-            currVertex = traversalQueue.dequeue();
-            std::cout << currVertex->getID() << " ";
-
-            // Iterate through the neighbors
-            for (int i = 0; i < currVertex->myNeighbors.size(); i++) {
-
-                // If the current vertex isn't processed yet, add the neighbor vertex to the queue
-                if (!(currVertex->myNeighbors[i]->isProccessed())) {
-
-                    traversalQueue.enqueue(currVertex->myNeighbors[i]);
-                    currVertex->myNeighbors[i]->proccessed = true;
-
-                } // if
-                    
-            } // for
-
-        } // while
-
-    } // if
-
-    else
-        std::cout << "That vertex does not exist." << std::endl;
-
-} // breadthFirstTraversal
-*/

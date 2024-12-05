@@ -6,7 +6,7 @@
  * fractional knapsack problem with out directed graph. 
  * Date Created: 11/30/24
  * Last Updated: 12/4/24
- * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp Queue.cpp Vertex.cpp
+ * Compilation: g++ -std=c++20 -o SSSP-Spice main.cpp NodeLinkedList.cpp Graph.cpp Queue.cpp Vertex.cpp Spice.cpp
  * Run Program: ./SSSP-Spice
  * ------------------------------------------------------------------------------------------------------------------------------------------------
  * Assignment 4             |               CMPT 435 - ALGORITHMS FALL 2024             |               DR. ALAN LABOUSEUR
@@ -19,6 +19,7 @@
 #include <cctype>
 #include "Graph.h" 
 #include <sstream>
+#include "Spice.h"
 
 // Types
 #include <string>
@@ -192,8 +193,11 @@ int main() {
     std::string tempWord = " ";  // variable to save arbitrary words while processing
     std::string spiceName = " ";
     int weight = 0;
-    int componentCount = 0;
-    std::vector<std::string> spiceAttributes; 
+    int currSpiceIndex = -1;
+    std::vector<std::string> spiceAttributes;
+    std::vector<Spice> spices;
+    double spicePrice = 0.0;
+    int spiceQuantity = 0;
 
     /**
      * SSSP
@@ -281,7 +285,12 @@ int main() {
     while(std::getline(spiceFile, entry)) {
 
         // Check if we are at a spice object entry
-        if (entry.find("spice") != std::string::npos) {
+        if (entry.find("spice name =") != std::string::npos) {
+
+            // Instansiate our Spice object and save it 
+            Spice newSpice;
+            spices.push_back(newSpice);
+            currSpiceIndex++;
 
             // Make a vector that splits the entry on semicolons
             spiceAttributes = split(entry, ';');
@@ -291,6 +300,7 @@ int main() {
 
                 // Get name
                 if (spiceAttributes[j].find("name =") != std::string::npos) {
+                    
 
                     // Parse out the name
                     std::istringstream stream(spiceAttributes[j]);
@@ -298,10 +308,39 @@ int main() {
                     stream >> tempWord;  // "name"
                     stream >> tempWord;  // "="
                     stream >> spiceName;  // "{name}"
-                    
-                    std::cout << spiceName << std::endl;
+
+                    // Add the name to our current object
+                    spices[currSpiceIndex].setSpiceName(spiceName);
 
                 } // if 
+
+                // Get the total price
+                else if (spiceAttributes[j].find("total_price =") != std::string::npos) {
+                    
+                    // Parse out the total price
+                    std::istringstream stream(spiceAttributes[j]);
+                    stream >> tempWord;  // "total_price"
+                    stream >> tempWord;  // "="
+                    stream >> spicePrice;  // {total_price}
+                    
+                    // Add the name to our current object
+                    spices[currSpiceIndex].setTotalPrice(spicePrice);
+
+                } // else if
+
+                // Get the quantity
+                else if (spiceAttributes[j].find("qty =") != std::string::npos) {
+                    
+                    // Parse out the quantity
+                    std::istringstream stream(spiceAttributes[j]);
+                    stream >> tempWord;  // "qty"
+                    stream >> tempWord;  // "="
+                    stream >> spiceQuantity;  // {total_price}
+                    
+                    // Add the name to our current object
+                    spices[currSpiceIndex].setQuantity(spiceQuantity);
+
+                } // else if
 
             } // for j
 
@@ -309,6 +348,9 @@ int main() {
 
     } // while
 
+    for (int t=0; t < spices.size(); t++)
+        std::cout << spices[t].getSpiceName() << ", " << spices[t].getTotalPrice() << ", " << spices[t].getQuantity() << std::endl;
+    
     // Close magicitems.txt
     spiceFile.close();
 
