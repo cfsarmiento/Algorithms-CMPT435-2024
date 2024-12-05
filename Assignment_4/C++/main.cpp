@@ -47,7 +47,7 @@ void initSingleSource(Graph graphObject, Vertex* initVertex) {
 
 } // initSingleSource()
 
-void relax(Vertex* startVertex, Vertex* endVertex, int edgeWeight) {
+void relax(Vertex*& startVertex, Vertex*& endVertex, int edgeWeight) {
 
     // Relax the path cost if the cost of getting to edge is greater than the current path
     if (endVertex->minDistance > startVertex->minDistance + edgeWeight) {
@@ -101,31 +101,38 @@ void outputShortestPath(Vertex* initVertex, std::vector<Vertex*> vertices) {
 
         } // for j
 
+        // Clear the vector for next iteration
+        idVector.clear();
+
         // Add newline character to not crowd the output
         outputString += "\n";
 
     } // for i
 
+    // Print final string
+    std::cout << outputString << std::endl;
+
 } // outputShortestPath
 
-// TODO: not outputting correctly, always converges to "negative weight cycle"
-void bellmanFordSSSP(Graph graph, Vertex* startVertex) {
+
+void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
 
     // Variables
-    std::vector<Vertex*> graphVertices = graph.myVertices;
-    std::vector<std::tuple<Vertex*, Vertex*, int>> graphEdges = graph.myEdges;
+    std::vector<Vertex*>& graphVertices = graph.myVertices;
+    std::vector<std::tuple<Vertex*, Vertex*, int>>& graphEdges = graph.myEdges;
     bool success = true;
 
     // Initialize starting distances and predecessor vertex
     initSingleSource(graph, startVertex);
 
+
     // Iterate through the vertices
-    for (int i=1; i < (graphVertices.size() - 1); i++) {
+    for (int i=1; i <= (graphVertices.size() - 1); i++) {
 
         // Iterate through the edges
         for (int j=0; j < graphEdges.size(); j++) {
 
-            relax(std::get<0>(graphEdges[i]), std::get<1>(graphEdges[i]), std::get<2>(graphEdges[i]));
+            relax(std::get<0>(graphEdges[j]), std::get<1>(graphEdges[j]), std::get<2>(graphEdges[j]));
     
         } // for j
 
@@ -236,6 +243,7 @@ int main() {
     // Iterate through the graphs and conduct Bellman-Ford SSSP
     for (int i=0; i < graphs.size(); i++) {
 
+        std::cout << "Graph " << i + 1 << ":" << std::endl;
         bellmanFordSSSP(graphs[i], graphs[i].myVertices[0]);
 
     } // for i
