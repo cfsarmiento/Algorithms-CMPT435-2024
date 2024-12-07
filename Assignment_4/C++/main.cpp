@@ -146,7 +146,6 @@ void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
     // Initialize starting distances and predecessor vertex
     initSingleSource(graph, startVertex);
 
-
     // Iterate through the vertices
     for (int i=1; i <= (graphVertices.size() - 1); i++) {
 
@@ -166,7 +165,6 @@ void bellmanFordSSSP(Graph& graph, Vertex* startVertex) {
             success = false;
 
     } // for k
-
 
     // Print results
     if (success) 
@@ -490,7 +488,7 @@ int main() {
 
     } // while
 
-    // Close graphs1.txt
+    // Close graphs2.txt
     graphFile.close();
 
     // Iterate through the graphs and conduct Bellman-Ford SSSP
@@ -611,7 +609,7 @@ int main() {
     // Perform the greedy algorithm for filling our knapsacks
     greedySpiceCollection(knapsacks, spices);
 
-    // Close magicitems.txt
+    // Close spice.txt
     spiceFile.close();
 
 }; // main()
